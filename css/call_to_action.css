@@ -1,0 +1,74 @@
+:root {
+    --main-pink: #ff97b7;
+    --main-blue: #73d2de;
+    --main-violet: #792359;
+    --main-rose_gold: #ffa88b;
+  }
+
+
+#logo_stetia_CTA{
+    width: 250px;
+    height: 250px;
+    display: block;
+    margin-right: 10px;
+}
+
+#cta{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 30px;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: var(--main-blue);
+}
+
+#logo-benef{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+#text-cta{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.fs2-cta{
+    text-align: center;
+}
+
+.btn-cta{
+    background-color: var(--main-violet);
+    border: none;
+    margin: 10px;
+}
+
+
+.btn-cta:hover{
+    background-color: var(--main-pink);
+}
+
+@media (max-width: 1000px) {
+    
+    #logo_stetia_CTA{
+        width: 200px;
+        height: 200px;
+        
+    }
+    #logo-benef{
+        flex-direction: column;
+    }
+    
+ 
+    
+}
+
+@media (min-width: 600px) and (max-width: 999px) {
+    #logo_stetia_CTA{
+        width: 250px;
+        height: 250px;
+        
+    }
+}  

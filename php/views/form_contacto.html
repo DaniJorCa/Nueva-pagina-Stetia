@@ -1,0 +1,63 @@
+<div id="div-formulario">
+    <h5 class="display-5 text-center">Formulario de contacto</h5>
+    <h5 class="fs-6 text-center">Nuestros profesionales se pondrán en contacto contigo</h5>
+    <form class="row g-3 col-8 my-4 needs-validation" method="POST" action="index.php?type=_contact" novalidate >
+    <div class="input-group input-group-md mb-3 col-md-4 row">
+        <label for="validationCustom01" class="form-label col-12">Nombre</label>
+        <input class="form-control col-12" name="nombre" type="text" id="validationCustom01" aria-label="default input example" required>
+        <div class="valid-feedback">
+            Nombre válido
+        </div>
+        <div class="invalid-feedback">
+            Nombre inválido
+        </div>
+    </div>
+    <div class="input-group input-group-md mb-3 row">
+        <label for="validationCustom01" class="form-label col-12">Primer apellido</label>
+        <input class="form-control col-12" name="p_apellido" type="text" id="validationCustom01" aria-label="default input example" required>
+        <div class="valid-feedback">
+            Apellido válido
+        </div>
+        <div class="invalid-feedback">
+            Apellido inválido
+        </div>
+    </div>
+    <div class="input-group input-group-md mb-3 row">
+        <label for="validationCustom01" class="form-label col-12">Segundo apellido</label>
+        <input class="form-control col-12" name="s_apellido" type="text" id="validationCustom01" aria-label="default input example" required>
+        <div class="valid-feedback">
+            Apellido válido
+        </div>
+        <div class="invalid-feedback">
+            Apellido inválido
+        </div>
+    </div>
+    <div class="input-group input-group-md mb-3 row">
+        <label for="validationCustom01" class="form-label col-12">Email</label>
+        <input class="form-control col-12" name="email" type="email" id="validationCustom01" aria-label="default input example" required>
+        <div class="valid-feedback">
+            Email válido
+        </div>
+        <div class="invalid-feedback">
+            Email inválido
+        </div>
+    </div>
+
+    <div class="input-group">
+        <span class="input-group-text">¿Tienes dudas?</span>
+        <textarea class="form-control" name="consultas" aria-label="With textarea" placeholder="Cuéntanos"></textarea>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+        <label class="form-check-label" for="invalidCheck">
+        Acepto los términos de licencia
+        </label>
+        <div class="invalid-feedback">
+        Debes aceptar los términos antes de enviar el formulario
+        </div>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit" name="form_contact">Enviar formulario de contacto</button>
+    </div>
+    </form>
+</div>

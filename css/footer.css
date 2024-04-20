@@ -1,0 +1,41 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --main-pink: #ff97b7;
+    --main-blue: #73d2de;
+    --main-violet: #792359;
+    --main-rose_gold: #ffa88b;
+  }
+  
+
+footer{
+    min-height: 150px;
+    height: auto;
+    background-color: var(--main-violet);
+}
+
+footer i{
+    color: var(--main-rose_gold);
+}
+
+.logo_footer{
+    height: 60px;
+    min-height: 50px;
+    width: auto;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.text-place{
+    font-size: 0.6rem;
+}
+
+.fa-square-facebook{
+    font-size: 1.6rem;
+    color: var(--main-rose_gold);
+}

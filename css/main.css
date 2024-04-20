@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --main-pink: #ff97b7;
+    --main-blue: #73d2de;
+  }
+  
+
+main{
+    min-height: 500px;
+}
+
+.fa-map-location-dot{
+    font-size: 1.3rem;
+}
+
+.whatsapp-btn{
+    position: fixed;
+    bottom: 60px;
+    right: 30px;
+}
+
+.fa-whatsapp{
+    font-size: 1.6rem;
+}
+
+#div-formulario{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

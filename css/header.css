@@ -1,0 +1,13 @@
+#header_logo{
+    height: 70px;
+    width: 65px;
+}
+
+.carousel-inner{
+    max-height: 600px;
+}
+
+#carouselExampleIndicators{
+    max-height: 600px;
+}
+
