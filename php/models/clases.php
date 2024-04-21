@@ -47,7 +47,6 @@ function insert_object_in_BBDD($con, $tabla, $objeto) {
             $sql .= "$campo, ";
             $valores .= ":$campo, ";
         }
-
         // Eliminar la coma y el espacio extra al final de $sql y $valores
         $sql = rtrim($sql, ', ') . ")";
         $valores = rtrim($valores, ', ') . ")";
@@ -73,6 +72,66 @@ function insert_object_in_BBDD($con, $tabla, $objeto) {
         return false;
     }
 }
+
+
+function update_object_in_BBDD($con, $tabla, $objeto, $where_key, $where_value) {
+    try{
+        // Preparar la declaración SQL
+        $sql = "UPDATE $tabla SET ";
+        
+        // Obtener los valores del objeto como un array
+        $atributos = $objeto->toArray();
+        //var_dump($atributos);
+
+        // Construir la lista de campos a actualizar
+        $campos_para_actualizar = [];
+        foreach ($atributos as $campo => $valor) {
+            // Ignorar los valores nulos
+            if ($valor !== null && $campo !== $where_key) { // Excluir el campo 'where_key' de la actualización
+                $campos_para_actualizar[] = "$campo = :$campo";
+                //var_dump(" CAMPOS PARA ACTUALIZAR --> " . $campo); //6 CAMPOS PARA ACTUALIZAR
+            }
+        }
+        // Unir los campos a actualizar en una cadena
+        $sql .= implode(", ", $campos_para_actualizar);
+
+        // Agregar la cláusula WHERE para identificar la fila a actualizar
+        $sql .= " WHERE $where_key = :$where_key"; // Usar el mismo nombre de parámetro para WHERE
+
+        //var_dump("Consulta SQL -> ". $sql);
+
+        // Preparar la declaración
+        $statement = $con->prepare($sql);
+
+        // Vincular los valores a los marcadores de posición y ejecutar la consulta
+        foreach ($atributos as $campo => $valor) {
+            if ($valor !== null) {
+                // Vincular el valor al marcador de posición, asegurándose de usar el tipo de dato correcto
+                $parametro = is_string($valor) ? PDO::PARAM_STR : PDO::PARAM_NULL;
+                $statement->bindValue(":$campo", $valor, $parametro);
+                //var_dump("PARAMETROS -> ". $valor);
+            }
+        }
+        
+        
+        // Vincular el valor de 'id' para la cláusula WHERE
+        $statement->bindValue(":$where_key", $where_value, is_int($where_value) ? PDO::PARAM_INT : PDO::PARAM_STR); // Usar el mismo nombre de parámetro para WHERE
+
+        // Ejecutar la consulta
+        $statement->execute();
+
+        // Devolver true para indicar éxito
+        return true;
+    } catch (PDOException $e) {
+        echo 'Error al ejecutar la consulta: ' . $e->getMessage();
+        error_log("Error al intentar actualizar con la funcion update_object_in_BBDD. \n",3,'log/error.log');
+        return false;
+    }
+}
+
+
+
+
 
 
 function update_field_in_BBDD($con, $tabla, $campo, $nuevoValor, $whereCampo, $isvalue) {
@@ -184,18 +243,22 @@ class Usuario {
     private ?string $cod_postal;
     private ?int $perfil;
     private ?string $consultas;
+    private ?string $img;
+                    
+
 
 
     public function __construct(int $id, string $email, string $nombre,   string $p_apellido, string $s_apellido, 
                             $consultas = null, string $passwd = null, string $dni = null, int $telefono = null, string $direccion = null, 
-                            string $provincia = null, string $localidad = null, int $cod_postal = null, int $perfil = 0, 
+                            string $provincia = null, string $localidad = null, int $cod_postal = null, int $perfil = 0, string $img = null, 
                             ) {
         $this->id = $id;
         $this->email = $email;
         $this->nombre = $nombre;
-        $this->passwd = $passwd;
         $this->p_apellido = $p_apellido;
         $this->s_apellido = $s_apellido;
+        $this->consultas = $consultas;
+        $this->passwd = password_hash($passwd, PASSWORD_DEFAULT);
         $this->dni = $dni;
         $this->telefono = $telefono;
         $this->direccion = $direccion;
@@ -203,7 +266,33 @@ class Usuario {
         $this->localidad = $localidad;
         $this->cod_postal = $cod_postal;
         $this->perfil = $perfil;
-        $this->consultas = $consultas;
+        $this->img = $img;
+    }
+
+
+    function boolean_comprobar_email($cadena) {
+        $dominio = "";
+        $correo = "";
+        $afterDot = "";
+    
+        $posArroba = strpos($cadena, "@");
+    
+        if($posArroba !== false){
+            $correo = substr($cadena, 0, $posArroba);
+            $dominio = substr($cadena, $posArroba, strlen($cadena));
+            $punto = strpos($dominio, ".");
+            if($punto == strlen($dominio) - 1){
+               $afterDot = "error";
+            }
+            
+            $espacios = strpos($cadena, " ");
+    
+            if($dominio !== " " && $correo !== " " && $espacios === false && $punto != false && $afterDot != "error"){
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
 
     public static function get_all_users() {
@@ -218,22 +307,75 @@ class Usuario {
         }
     }
 
+
+    public static function checkLog($email, $passwd){
+        $check;
+        try{
+            if(!isset($con)){
+                $con = Conexion::conectar_db();
+                
+            } 
+            $stmt = $con->prepare('SELECT * FROM usuarios WHERE  email = :email');
+            $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+            $stmt->execute();
+            $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+            var_dump($usuario);
+
+            if ($usuario && password_verify($passwd, $usuario['passwd'])) {
+                session_start();
+                $user = new Usuario(
+                    $usuario['id'],
+                    $usuario['email'],
+                    $usuario['nombre'],
+                    $usuario['p_apellido'],
+                    $usuario['s_apellido'],
+                    $usuario['consultas'],
+                    $usuario['passwd'],
+                    $usuario['dni'],
+                    $usuario['telefono'],
+                    $usuario['direccion'],
+                    $usuario['provincia'],
+                    $usuario['localidad'],
+                    $usuario['cod_postal'],
+                    $usuario['perfil'],
+                    $usuario['img'],
+                );
+                $_SESSION['user_log'] = $user;
+                return true;
+            }else{
+                return false;
+            }
+            
+            return $check;
+        }catch(PDOException $e){
+            error_log("Error autentificacion de usuario ".$_SESSION['user_log']. "\n",3,'log/error.log');
+            echo 'Error: ' . $e ->getMessage();
+            return false;
+        }
+    }
+
     // Función para obtener un objeto Usuario por su ID
 public static function get_object_user_by_value($con, $row, $value) {
     // Preparar la consulta SQL
-    $sql = "SELECT * FROM usuarios WHERE $row = :column";
+    $sql = "SELECT * FROM usuarios WHERE $row = :valor";
 
     // Preparar la declaración
     $statement = $con->prepare($sql);
 
     // Vincular el valor del ID al marcador de posición en la consulta SQL
-    $statement->bindValue(':column', $value, PDO::PARAM_INT);
+    if(gettype($value) === 'string'){
+        $statement->bindValue(':valor', $value, PDO::PARAM_STR); 
+    }else{
+        $statement->bindValue(':valor', $value, PDO::PARAM_INT);
+    }
+    
 
     // Ejecutar la consulta
     $statement->execute();
 
     // Obtener los valores del usuario como un array asociativo
     $user_data = $statement->fetch(PDO::FETCH_ASSOC);
+    //var_dump($user_data);
 
     // Construir un objeto Usuario con los valores obtenidos
     $user = new Usuario(
@@ -251,6 +393,7 @@ public static function get_object_user_by_value($con, $row, $value) {
         $user_data['localidad'],
         $user_data['cod_postal'],
         $user_data['perfil'],
+        $user_data['img'],
         
     );
 
@@ -392,6 +535,13 @@ public static function get_object_user_by_value($con, $row, $value) {
     }
     public function getConsultas(): ?string {
         return $this->consulta;
+    }
+
+    public function setImg(?string $img) {
+        $this->img = $img;
+    }
+    public function getImg(): ?string {
+        return $this->img;
     }
 
     public function get_array_usuario(): array {

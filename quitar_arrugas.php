@@ -13,7 +13,6 @@
 <?php
     include ('php/controllers/tratamientos_controller.php');
     include ('php/views/header.html');
-    include ('php/views/slider.html');
 ?>    
     <main class="p-4 col-8 my-3">
 <?php        

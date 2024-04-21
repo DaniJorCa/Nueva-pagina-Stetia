@@ -1,0 +1,13 @@
+.div-flex-nocolumn{
+    display: flex;
+    flex-direction: row;
+}
+
+.div-flex-column{
+    display: flex;
+    flex-direction: column;
+}
+
+.fa-pen-fancy{
+    font-size: 1.6em;
+}

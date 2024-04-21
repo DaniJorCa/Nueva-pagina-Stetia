@@ -1,3 +1,10 @@
+<?php
+session_start();
+$_SESSION = array();
+session_destroy();
+
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,30 +16,18 @@
         <link href="css/main.css" rel="stylesheet">
         <link href="css/header.css" rel="stylesheet">
         <link href="css/generic.css" rel="stylesheet">
-        <link href="css/home.css" rel="stylesheet">
         <link href="css/call_to_action.css" rel="stylesheet">
-        <link href="css/aside.css" rel="stylesheet">
-        <link href="css/formulario_user_data.css" rel="stylesheet">
-        
+
     </head>
-    <body class="row d-flex justify-content-center" >
-    
+    <body class="row d-flex justify-content-center">
 <?php
-    require_once('php/security/security.php');
     require_once ('php/controllers/tratamientos_controller.php');
     require_once  ('php/controllers/form_controller.php');
-    include ('php/views/header.html');
-?> 
-    <div class='div-flex-nocolumn'>
-<?php
-    include  ('php/views/aside_bar.php');
-?>
-    
-   
+    require_once  ('php/views/header.html');
+    require_once  ('php/views/slider.html');
+?>    
     <main class="p-4  my-3">
-        
 <?php
-    
     //Control de mensajes
 
     if(isset($_GET['msg']) ? $message = $_GET['msg']: '');
@@ -48,24 +43,20 @@
         
 
 
-
-    if(isset($_GET['type']) ? $_GET = $_GET['type']: '');
-    
-        switch ($_GET) {
-            case '_modificar_datos';
-                include('php/views/modificar_mis_datos.php');
-                break;
-            case '_personal_corner';
-                include('php/views/personal_corner.php');
+    if(isset($_GET['type']) ? $choose = $_GET['type']: '');
+    if(isset($choose)){
+        switch ($choose) {
+            case '_contact';
+                check_contact_form();
                 break;
             default: 
-                include ('php/views/tratamientos_facial.html');
+                main_index();
         }
-    
+    }
 
-
+    include('php/views/call_to_action.html');
+    include ('php/views/form_contacto.html'); 
 ?>    
-    </div>
     </main>
 <?php   
 

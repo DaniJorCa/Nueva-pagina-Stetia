@@ -20,7 +20,8 @@
     margin-bottom: 30px;
     padding: 30px;
     border-radius: 10px;
-    background-color: var(--main-blue);
+    background-color: whitesmoke;
+    height: 450px;
 }
 
 #logo-benef{
@@ -43,11 +44,13 @@
     background-color: var(--main-violet);
     border: none;
     margin: 10px;
+    color: white;
 }
 
 
 .btn-cta:hover{
     background-color: var(--main-pink);
+    color: black;
 }
 
 @media (max-width: 1000px) {
