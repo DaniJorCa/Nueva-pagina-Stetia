@@ -1,24 +1,24 @@
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" id="aside-bar" style="width: 280px;">
     <a href="/es/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
         <use xlink:href="#bootstrap"></use>
-        </svg> <span class="fs-4">Hola <?php if(isset($_SESSION['login_nombre']) ? $_SESSION['login_nombre']:"")?></span> 
+        </svg> <span class="fs-4 text-center">Hola  <?php if($_SESSION['user_log']->getNombre() != ''){ echo $_SESSION['user_log']->getNombre(); }else{ echo("**Pendiente**");} ?></span> 
     </a>
     <hr>
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item"> 
-                <a href="/es/docs/5.2/examples/sidebars/#" class="nav-link active" aria-current="page">
+                <a href="home.php?type=_personal_corner" class="nav-link active" aria-current="page">
                     <i class="fa-solid fa-user-pen" style="color: #831959; width: 18px; height: 18px;"></i>
                     <use xlink:href="#home"></use>
                     </svg>Home</a> 
             </li>
             <li class="nav-item"> 
-                <a href="/es/docs/5.2/examples/sidebars/#" class="nav-link link-dark">
+                <a href="home.php?type=_mis_tratamientos" class="nav-link link-dark">
                 <i class="fa-solid fa-wand-magic-sparkles" style="color: #831959; width: 18px; height: 18px;"></i>
                 <use xlink:href="#speedometer2"></use>
                 </svg>Mis Tratamientos</a> 
             </li>
             <li> 
-                <a href="/es/docs/5.2/examples/sidebars/#" class="nav-link link-dark">
+                <a href="#" class="nav-link link-dark">
                 <i class="fa-solid fa-ranking-star" style="color: #831959; width: 18px; height: 18px;"></i>
                 <use xlink:href="#table"></use>
                 </svg>Programa de puntos</a> 
@@ -30,11 +30,18 @@
                 </svg>Recomendar Stetia</a> 
             </li>
             <li> 
-                <a href="home.php?type=_personal_corner" id='recommend_stetia' class="nav-link link-dark">
+                <a href="#" id='recommend_stetia' class="nav-link link-dark">
                 <i class="fa-solid fa-envelope" style="color: #831959;"></i>
                 <i class="fa-solid fa-envelope-open-text" style="color: #831959; display: none;"></i>
                 <use xlink:href="#grid"></use>
                 </svg>Notificaciones</a> 
+            </li>
+            <li> 
+                <a href="home.php?type=_goods_maiteinance" id='recommend_stetia' class="nav-link link-dark">
+                <i class="fa-solid fa-person-digging" style="color: #831959; width: 18px; height: 18px;"></i>
+                <i class="fa-solid fa-envelope-open-text" style="color: #831959; display: none;"></i>
+                <use xlink:href="#grid"></use>
+                </svg>Mtto. de articulos</a> 
             </li>
         </ul>
     <hr>

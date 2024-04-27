@@ -4,8 +4,11 @@ if(isset($_GET['info']) && $_GET['info'] === 'empty_fields'){
     echo "<h3 class='text-center text-danger'>No se admiten campos vacios en el formulario</h3>";
 }
 ?>
-<h5 class="display-4 text-center">Rincon de <?php if(isset($_SESSION['nombre_log'])? $_SESSION['nombre_log']:"")?></h5>
-<h5 class="text-center mb-5">En este apartado puedes consultar y modificar tus datos personales</h5>
+<div>
+    <h5 class="display-4 text-center">Rincon de <?php if(isset($_SESSION['nombre_log'])? $_SESSION['nombre_log']:"")?></h5>
+    <h5 class="text-center mb-5">En este apartado puedes consultar y modificar tus datos personales</h5>  
+</div>
+
 
 
 <form id="formulario_edit_datos_usuario" class="container-fluid" method="POST" action="index.php?view=_mod_datos_usuario">

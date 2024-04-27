@@ -3,6 +3,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300&family=Satisfy&display=swap');
 
 
+:root {
+    --main-pink: #ff97b7;
+    --main-blue: #73d2de;
+    --main-violet: #792359;
+    --main-rose_gold: #ffa88b;
+  }
+  
+
 main{
     font-family: "Roboto", sans-serif;
     font-style: normal;

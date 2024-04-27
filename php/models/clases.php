@@ -1,5 +1,56 @@
 <?php
  // Clases genericas
+ function any_form_update_field_are_empty(){
+
+ }
+
+ function wich_fields_want_update(){
+    $cadena_valores_a_modificar = "(";
+    #Recorremos las variables $_POST y vemos cuales estan vacias
+    #Nombre
+    if(!empty($_POST['nombre'])){
+        $_SESSION['user_log']->setNombre($_POST['nombre']) ;
+    }else{
+        error_log("Nombre vacío en el formulario de modificacion \n",3,'log/error.log');
+    }
+    #Primer apellido
+    if(!empty($_POST['p_apellido'])){
+        $_SESSION['user_log']->setP_apellido($_POST['p_apellido']);
+    }
+    #Segundo apellido
+    if(!empty($_POST['s_apellido'])){
+        $_SESSION['user_log']->setS_apellido($_POST['s_apellido']);
+    }
+    #Segundo apellido
+    if(!empty($_POST['dni'])){
+        $_SESSION['user_log']->setDni( $_POST['dni']);
+    }
+    #Telefono
+    if(!empty($_POST['telefono'])){
+        $_SESSION['user_log']->setTelefono($_POST['telefono']);
+    }
+    #Direccion
+    if(!empty($_POST['direccion'])){
+        $_SESSION['user_log']->setDireccion($_POST['direccion']);
+    }
+    #Provincia
+    if(!empty($_POST['provincia'])){
+        $_SESSION['user_log']->setProvincia($_POST['provincia']) ;
+    }
+    #Localidad
+    if(!empty($_POST['localidad'])){
+        $_SESSION['user_log']->setLocalidad($_POST['localidad']);
+    }
+    #Codigo postal
+    if(!empty($_POST['cod_postal'])){
+        $_SESSION['user_log']->setCodPostal($_POST['cod_postal']);
+    }
+    #Codigo postal
+    if(!empty($_POST['imagen'])){
+        $_SESSION['user_log']->setImg($_POST['imagen']);
+    }
+ }
+
 
  function len_values($lista, $tipoObjeto){
     $bandera = true;
@@ -81,7 +132,6 @@ function update_object_in_BBDD($con, $tabla, $objeto, $where_key, $where_value) 
         
         // Obtener los valores del objeto como un array
         $atributos = $objeto->toArray();
-        //var_dump($atributos);
 
         // Construir la lista de campos a actualizar
         $campos_para_actualizar = [];
@@ -89,7 +139,6 @@ function update_object_in_BBDD($con, $tabla, $objeto, $where_key, $where_value) 
             // Ignorar los valores nulos
             if ($valor !== null && $campo !== $where_key) { // Excluir el campo 'where_key' de la actualización
                 $campos_para_actualizar[] = "$campo = :$campo";
-                //var_dump(" CAMPOS PARA ACTUALIZAR --> " . $campo); //6 CAMPOS PARA ACTUALIZAR
             }
         }
         // Unir los campos a actualizar en una cadena
@@ -97,9 +146,6 @@ function update_object_in_BBDD($con, $tabla, $objeto, $where_key, $where_value) 
 
         // Agregar la cláusula WHERE para identificar la fila a actualizar
         $sql .= " WHERE $where_key = :$where_key"; // Usar el mismo nombre de parámetro para WHERE
-
-        //var_dump("Consulta SQL -> ". $sql);
-
         // Preparar la declaración
         $statement = $con->prepare($sql);
 
@@ -109,7 +155,6 @@ function update_object_in_BBDD($con, $tabla, $objeto, $where_key, $where_value) 
                 // Vincular el valor al marcador de posición, asegurándose de usar el tipo de dato correcto
                 $parametro = is_string($valor) ? PDO::PARAM_STR : PDO::PARAM_NULL;
                 $statement->bindValue(":$campo", $valor, $parametro);
-                //var_dump("PARAMETROS -> ". $valor);
             }
         }
         
@@ -123,7 +168,6 @@ function update_object_in_BBDD($con, $tabla, $objeto, $where_key, $where_value) 
         // Devolver true para indicar éxito
         return true;
     } catch (PDOException $e) {
-        echo 'Error al ejecutar la consulta: ' . $e->getMessage();
         error_log("Error al intentar actualizar con la funcion update_object_in_BBDD. \n",3,'log/error.log');
         return false;
     }
@@ -319,11 +363,10 @@ class Usuario {
             $stmt->bindValue(':email', $email, PDO::PARAM_STR);
             $stmt->execute();
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-            var_dump($usuario);
 
             if ($usuario && password_verify($passwd, $usuario['passwd'])) {
                 session_start();
-                $user = new Usuario(
+                $_SESSION['user_log'] = new Usuario(
                     $usuario['id'],
                     $usuario['email'],
                     $usuario['nombre'],
@@ -340,7 +383,7 @@ class Usuario {
                     $usuario['perfil'],
                     $usuario['img'],
                 );
-                $_SESSION['user_log'] = $user;
+
                 return true;
             }else{
                 return false;
@@ -349,7 +392,6 @@ class Usuario {
             return $check;
         }catch(PDOException $e){
             error_log("Error autentificacion de usuario ".$_SESSION['user_log']. "\n",3,'log/error.log');
-            echo 'Error: ' . $e ->getMessage();
             return false;
         }
     }
@@ -375,7 +417,6 @@ public static function get_object_user_by_value($con, $row, $value) {
 
     // Obtener los valores del usuario como un array asociativo
     $user_data = $statement->fetch(PDO::FETCH_ASSOC);
-    //var_dump($user_data);
 
     // Construir un objeto Usuario con los valores obtenidos
     $user = new Usuario(
@@ -531,10 +572,10 @@ public static function get_object_user_by_value($con, $row, $value) {
     }
 
     public function setConsultas(?string $consulta) {
-        $this->consulta = $consulta;
+        $this->consulta = $consultas;
     }
     public function getConsultas(): ?string {
-        return $this->consulta;
+        return $this->consultas;
     }
 
     public function setImg(?string $img) {

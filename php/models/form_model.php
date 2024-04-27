@@ -1,5 +1,4 @@
 <?php
-
 //Limpia los datos del formulario y comprueba si el email existe en la BBDD
 function check_contact_form_fields(){
     if(!isset($con)){
@@ -16,25 +15,23 @@ function check_contact_form_fields(){
     if (!exist_object_in_BBDD($con, 'usuarios', 'email', $email)){
         $any_max_len_values = len_values($_POST, 'usuarios');
         if($any_max_len_values == false){
-            var_dump("<p class='text-center>Ha habido un error! Intente de nuevo <p>");
+            error_log("Error en form_model.php fn->check_contact_form_fields \n",3,'log/error.log');
         }else{
             $tabla = "usuarios";
             $max_id = get_max_value_of_field('usuarios', 'id');
             $last_id = $max_id['max_field'] + 1;
             $usuario = new Usuario($last_id, $email, $nombre, $p_apellido, $s_apellido, $consulta);
             $id_insertado = insert_object_in_BBDD($con, $tabla, $usuario);
-            var_dump($id_insertado);
             if ($id_insertado){
-                echo("<p class='text-center fs-4'>En breve nos pondremos en contacto contigo ". $usuario->getNombre(). "<p>");
+                //echo("<p class='text-center fs-4'>En breve nos pondremos en contacto contigo ". $usuario->getNombre(). "<p>");
             }else{
-                echo("UUps!! Ha habido un error");
+                //echo("UUps!! Ha habido un error");
             }  
         }
         
     }else{
         $usuario = Usuario::get_object_user_by_value($con, 'consultas', $email);
         $value_updated = update_field_in_BBDD($con, 'usuarios', 'consultas', $consulta, 'email', $usuario->getEmail());
-        var_dump("Consulta actualizada");
     }
 }
 
@@ -94,5 +91,35 @@ function check_register_form_fields(){
         exit();
     }    
 
+}
+
+
+function modificar_usuario_registrado(){
+
+    require_once('php/models/clases.php');
+    $con = Conexion::conectar_db();
+    $nombre = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING);
+    $p_apellido = filter_input(INPUT_POST, 'p_apellido', FILTER_SANITIZE_STRING);
+    $s_apellido = filter_input(INPUT_POST, 's_apellido', FILTER_SANITIZE_STRING);
+    $dni = filter_input(INPUT_POST, 'dni', FILTER_SANITIZE_STRING);
+    $telefono = filter_input(INPUT_POST, 'telefono', FILTER_SANITIZE_STRING);
+    $direccion = filter_input(INPUT_POST, 'direccion', FILTER_SANITIZE_STRING);
+    $provincia = filter_input(INPUT_POST, 'provincia', FILTER_SANITIZE_STRING);
+    $localidad = filter_input(INPUT_POST, 'localidad', FILTER_SANITIZE_STRING);
+    $cod_postal = filter_input(INPUT_POST, 'cod_postal', FILTER_SANITIZE_STRING);
+    $img = filter_input(INPUT_POST, 'imagen', FILTER_SANITIZE_STRING);
+    
+    $valores_a_modificar = (wich_fields_want_update($_POST));
+    $user_mod = new Usuario($_SESSION['user_log']->getId(), $_SESSION['user_log']->getEmail(), $_SESSION['user_log']->getNombre(), $_SESSION['user_log']->getP_apellido(), 
+                        $_SESSION['user_log']->getS_apellido(), $_SESSION['user_log']->getConsultas(), $_SESSION['user_log']->getPasswd(),  $_SESSION['user_log']->getDni(), 
+                        $_SESSION['user_log']->getTelefono(), $_SESSION['user_log']->getDireccion(), $_SESSION['user_log']->getProvincia(), $_SESSION['user_log']->getLocalidad(), 
+                        $_SESSION['user_log']->getCodPostal(), $_SESSION['user_log']->getPerfil(), $_SESSION['user_log']->getImg());
+    try{
+        update_object_in_BBDD($con, 'usuarios', $user_mod, 'id', $_SESSION['user_log']->getId());
+        return true;
+    }catch (PDOException $e){
+        error_log("Error al actualizar el usuario form_model.php fn->update_object_in_BBDD\n",3,'log/error.log');
+        return false;
+    }
 }
 ?>
