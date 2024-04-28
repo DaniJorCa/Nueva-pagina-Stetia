@@ -76,6 +76,7 @@ include  ('php/views/aside_bar.php');
 <?php
     include ('php/views/footer.html');
 ?>
+        <script src="js/upload_img.js"></script>
         <script src="bootstrap_css/js/bootstrap.bundle.min.js"></script>
         <script src="js/validity_form.js"></script>
     </body>

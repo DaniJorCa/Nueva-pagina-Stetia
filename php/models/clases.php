@@ -1,8 +1,83 @@
 <?php
  // Clases genericas
- function any_form_update_field_are_empty(){
 
+ function check_and_compressed_image($archivo, $ruta_destino, $calidad_compresion = 75) {
+     // Obtener información del archivo
+     $nombre_archivo = $archivo['name'];
+     $tipo_archivo = $archivo['type'];
+     $ruta_temporal = $archivo['tmp_name'];
+ 
+     // Verificar si el archivo es una imagen
+     if (strpos($tipo_archivo, 'image') !== false) {
+         // Crear una imagen a partir del archivo
+         $imagen = imagecreatefromstring(file_get_contents($ruta_temporal));
+ 
+         // Verificar el tipo de imagen y crear una nueva imagen según el tipo
+         switch ($tipo_archivo) {
+             case 'image/jpeg':
+             case 'image/jpg':
+                 $imagen_comprimida = imagejpeg($imagen, $ruta_destino, $calidad_compresion);
+                 break;
+             case 'image/png':
+                 $imagen_comprimida = imagepng($imagen, $ruta_destino, round(6 * $calidad_compresion / 100)); // Calidad de compresión de 0 a 9
+                 break;
+             case 'image/gif':
+                 $imagen_comprimida = imagegif($imagen, $ruta_destino);
+                 break;
+             default:
+                error_log("Error al subir la imagen tipo no soportado. \n",3,'log/error.log');
+                 return false;
+         }
+ 
+         // Liberar la memoria utilizada por la imagen
+         imagedestroy($imagen);
+ 
+         if ($imagen_comprimida && move_uploaded_file($ruta_temporal, $ruta_destino)) {
+            return true;
+        } else {
+            error_log("Error al subir la imagen a la carpeta de destino. \n",3,'log/error.log');
+            return false;
+        }
+     } else {
+         return false; // El archivo no es una imagen
+     }
  }
+ 
+ function subirImg($array){
+    $temporal = $array["tmp_name"];
+    $destino = "imgUploads/" . $array['name'];
+    $checkImg = formato($array['name']);
+    if($checkImg){
+       if (move_uploaded_file ($temporal, $destino)){
+        }else{
+            echo "<p>Ocurrio un error, no se ha podido subir el archivo</p>";
+        }  
+    }else{
+        echo "<p>El formato de imagen no es correcto</p>";
+    }
+    
+}
+
+function boolean_img_is_too_size($array){
+    return ($array['size'] > 10000000) ? true : false; 
+}
+
+
+function formato_imagen($cadena){
+    $pos = strrpos($cadena, ".");
+    if(!empty($pos)){
+        $res = substr($cadena, $pos, strlen($cadena));
+    }else{
+        $res = false;
+    }
+    
+    if($res == '.gif' || $res == '.png' ||$res == '.jpeg' ||$res == '.jpg'){
+        $res = true;
+    }else{
+        $res = false;
+    }
+    return $res;
+}
 
  function wich_fields_want_update(){
     $cadena_valores_a_modificar = "(";

@@ -1,9 +1,10 @@
 <form class="row col-12 container-fluid" method="POST" enctype='multipart/form-data'>
     <div class="card mb-3 col-12 col-md-4">
-    <div class="row g-0">
-        <div class="col-md-4">
-        <input type='file' name='imagen' style="display: none;">
-        <label for="imagen">
+    <div class="row g-0"style="overflow: hidden;">
+        <div class="col-12 col-md-4">
+        <input type='file' name='imagen' id='imagen' style="display: none; " onchange="showPreview()">
+        <img id="preview" src="#" alt="Vista previa" style="max-width: 350px; height: 380px;">
+        <label for="imagen" >
             <i class="fa-solid fa-upload" style="color: #831959;"></i>
         </label>
         </div>
