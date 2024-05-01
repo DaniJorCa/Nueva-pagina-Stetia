@@ -1,5 +1,18 @@
 <?php
  // Clases genericas
+function formatear_precio($numero){
+    // Convertir el número a float
+    $numero = floatval($numero);
+
+    // Redondear el número a dos decimales
+    $numero_redondeado = round($numero, 2);
+
+    // Formatear el número como string con dos decimales
+    $numero_formateado = number_format($numero_redondeado, 2, '.', '');
+
+    return $numero_formateado;
+}
+
 
  function check_and_compressed_image($archivo, $ruta_destino, $calidad_compresion = 75) {
      // Obtener información del archivo
@@ -214,6 +227,7 @@ function update_object_in_BBDD($con, $tabla, $objeto, $where_key, $where_value) 
             // Ignorar los valores nulos
             if ($valor !== null && $campo !== $where_key) { // Excluir el campo 'where_key' de la actualización
                 $campos_para_actualizar[] = "$campo = :$campo";
+                
             }
         }
         // Unir los campos a actualizar en una cadena
@@ -227,8 +241,9 @@ function update_object_in_BBDD($con, $tabla, $objeto, $where_key, $where_value) 
         // Vincular los valores a los marcadores de posición y ejecutar la consulta
         foreach ($atributos as $campo => $valor) {
             if ($valor !== null) {
-                // Vincular el valor al marcador de posición, asegurándose de usar el tipo de dato correcto
-                $parametro = is_string($valor) ? PDO::PARAM_STR : PDO::PARAM_NULL;
+                // Determinar el tipo de dato correcto
+                $parametro = is_int($valor) ? PDO::PARAM_INT : (is_float($valor) ? PDO::PARAM_STR : PDO::PARAM_STR);
+                // Vincular el valor al marcador de posición con el tipo de dato correcto
                 $statement->bindValue(":$campo", $valor, $parametro);
             }
         }
@@ -239,6 +254,7 @@ function update_object_in_BBDD($con, $tabla, $objeto, $where_key, $where_value) 
 
         // Ejecutar la consulta
         $statement->execute();
+        //var_dump($statement);
 
         // Devolver true para indicar éxito
         return true;
@@ -520,6 +536,8 @@ public static function get_object_user_by_value($con, $row, $value) {
 
 
 
+
+
     public static function boolean_check_email($cadena) {
         $dominio = "";
         $correo = "";
@@ -685,15 +703,19 @@ class Tratamiento {
     protected ?string $descrip;
     protected float $precio;
     protected string $zona_corp;
+    protected string $img;
+    protected ?int $baja;
     
 
 
-    public function __construct(string $id, string $nombre, string $descrip = null, float $precio, string $zona_corp) {
+    public function __construct(string $id, string $nombre, string $descrip = null, float $precio, string $zona_corp, string $img, int $baja = 0) {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->descrip = $descrip;
         $this->precio = $precio;
         $this->zona_corp = $zona_corp;
+        $this->img = $img;
+        $this->baja = $baja;
     }
 
     public static function get_all_treatments() {
@@ -707,6 +729,57 @@ class Tratamiento {
         }
     }
 
+
+    public function toArray(): array {
+        $valores = [];
+        foreach (get_object_vars($this) as $atributo => $valor) {
+            // Si el valor es numérico, mantén su tipo de dato
+            if (is_numeric($valor)) {
+                $valores[$atributo] = $valor + 0; // Forzar a float
+            } else {
+                $valores[$atributo] = $valor;
+            }
+        }
+        return $valores;
+    }
+
+
+        // Función para obtener un objeto Usuario por su ID
+        public static function get_object_treatment_by_value($con, $row, $value) {
+            // Preparar la consulta SQL
+            $sql = "SELECT * FROM tratamientos WHERE $row = :valor";
+        
+            // Preparar la declaración
+            $statement = $con->prepare($sql);
+        
+            // Vincular el valor del ID al marcador de posición en la consulta SQL
+            if(gettype($value) === 'string'){
+                $statement->bindValue(':valor', $value, PDO::PARAM_STR); 
+            }else{
+                $statement->bindValue(':valor', $value, PDO::PARAM_INT);
+            }
+            
+        
+            // Ejecutar la consulta
+            $statement->execute();
+        
+            // Obtener los valores del usuario como un array asociativo
+            $treatment_data = $statement->fetch(PDO::FETCH_ASSOC);
+        
+            // Construir un objeto Usuario con los valores obtenidos
+            $tratamiento = new Tratamiento(
+                $treatment_data['id'],
+                $treatment_data['nombre'],
+                $treatment_data['descrip'],
+                $treatment_data['precio'],
+                $treatment_data['zona_corp'],
+                $treatment_data['img'],
+                $treatment_data['baja'],
+            );
+        
+            // Devolver el usuario
+            return $tratamiento;
+        }
 
 
     //SETTERS y GETTERS
@@ -746,13 +819,30 @@ class Tratamiento {
         return $this->zona_corp;
     }
 
+    public function setImg(string $img) {
+        $this->img = $img;
+    }
+    public function getImg(): string {
+        return $this->img;
+    }
+    public function setBaja(?int $baja) {
+        $this->baja = $baja;
+    }
+    
+    public function getBaja(): ?int {
+        return $this->baja; 
+    }
+    
+
     public function get_array_tratamiento(): array {
         return [
             'id' => $this->id,
             'nombre' => $this->nombre,
             'descripcion' => $this->descrip,
             'precio' => $this->precio,
-            'Zona corporal' => $this->zona_corp
+            'Zona corporal' => $this->zona_corp,
+            'Imagen' => $this->img,
+            'Baja' => $this->baja
         ];
     }
 }

@@ -45,6 +45,15 @@ include  ('php/views/aside_bar.php');
     if(isset($_GET['type'])){
         $type = $_GET['type'];
         switch ($type) {
+            case '_update_treatment';
+                update_treatment();
+                break; 
+            case '_editar_tratamiento';
+                edit_treatment();
+                break; 
+            case '_upload_treatment';
+                upload_treatment();
+                break; 
             case '_nuevo_tratamiento';
                 new_treatment();
                 break;
