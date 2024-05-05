@@ -2,13 +2,13 @@
 <h3 class="text-center">¿Que tipo de articulos quieres modificar?</h3>
 
 <span class='dinamic-cards'>
-    <a href="home.php?type=_edit_tratamientos">
+    <a href="home.php?type=_mostrar_tratamientos">
         <figure style="--c:#fff5">
             <img src="img/happy-girl.jpg" alt="happy-girl">
             <figcaption>Tratamientos</figcaption>
         </figure>
     </a>    
-    <a href="home.php?type=_edit_productos">
+    <a href="home.php?type=_mostrar_articulos">
         <figure style="--c:#fff5">
             <img src="img/productos.jpg" alt="Mountains">
             <figcaption>Articulos</figcaption>

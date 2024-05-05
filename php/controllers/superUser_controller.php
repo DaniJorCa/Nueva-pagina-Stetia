@@ -14,7 +14,7 @@ function mostrar_tratamientos(){
 function mostrar_articulos(){
     require_once('php/models/clases.php');
 
-    include('php/views/productos_stetia.php');
+    include('php/views/articulos_stetia.php');
 }
 
 function new_treatment(){

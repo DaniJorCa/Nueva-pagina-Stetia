@@ -3,9 +3,9 @@
     <head>
         <meta charset="UTF-8" lang="es">
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon_stetia.ico">
+        <link href="css/footer.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
         <link href="bootstrap_css/css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/footer.css" rel="stylesheet">
         <link href="css/main.css" rel="stylesheet">
         <link href="css/header.css" rel="stylesheet">
         <link href="css/generic.css" rel="stylesheet">
@@ -22,6 +22,7 @@ require_once('php/security/security.php');
 require_once ('php/controllers/tratamientos_controller.php');
 require_once  ('php/controllers/form_controller.php');
 require_once  ('php/controllers/superUser_controller.php');
+require_once  ('php/controllers/user_controller.php');
 include_once ('php/views/header.html');
 ?>
 <div class='div-flex-nocolumn'>
@@ -45,6 +46,15 @@ include  ('php/views/aside_bar.php');
     if(isset($_GET['type'])){
         $type = $_GET['type'];
         switch ($type) {
+            case '_mostrar_articulos';
+                mostrar_articulos();
+                break;
+            case '_users_maiteinance';
+                show_users();
+                break; 
+            case '_mis_puntos';
+                my_score();
+                break; 
             case '_update_treatment';
                 update_treatment();
                 break; 
@@ -57,11 +67,8 @@ include  ('php/views/aside_bar.php');
             case '_nuevo_tratamiento';
                 new_treatment();
                 break;
-            case '_edit_tratamientos';
+            case '_mostrar_tratamientos';
                 mostrar_tratamientos();
-                break;
-            case '_edit_productos';
-                mostrar_productos();
                 break;
             case '_goods_maiteinance';
                 mostrar_menu_mantenimiento();
@@ -85,8 +92,10 @@ include  ('php/views/aside_bar.php');
 <?php
     include ('php/views/footer.html');
 ?>
+        <script src="js/tablas.js"></script>
         <script src="js/upload_img.js"></script>
         <script src="bootstrap_css/js/bootstrap.bundle.min.js"></script>
         <script src="js/validity_form.js"></script>
+        <script src="js/busqueda_selectiva.js"></script>
     </body>
 </html>

@@ -41,6 +41,12 @@ require_once  ('php/controllers/form_controller.php');
         <link href="css/header.css" rel="stylesheet">
         <link href="css/generic.css" rel="stylesheet">
         <link href="css/call_to_action.css" rel="stylesheet">
+        <link href="assets/css/style.css" rel="stylesheet">
+
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
     </head>
 
@@ -51,9 +57,12 @@ require_once  ('php/controllers/form_controller.php');
 ?>
     <body class="row d-flex justify-content-center">
 
-    <main class="p-4  my-3">
+    <main class=" my-3">
 <?php
     include('php/views/call_to_action.html');
+    include ('php/views/numeros_stetia.html');
+    include ('php/views/testimonial.html');
+    include ('php/views/personal_stetia.html');
     include ('php/views/form_contacto.html');
 ?>
    
@@ -64,5 +73,17 @@ require_once  ('php/controllers/form_controller.php');
 ?>
         <script src="bootstrap_css/js/bootstrap.bundle.min.js"></script>
         <script src="js/validity_form.js"></script>
+
+         <!-- Vendor JS Files -->
+        <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+        <script src="assets/vendor/aos/aos.js"></script>
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+        <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+        <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+        <script src="assets/vendor/php-email-form/validate.js"></script>
+
+        <!-- Template Main JS File -->
+        <script src="assets/js/main.js"></script>
     </body>
 </html>

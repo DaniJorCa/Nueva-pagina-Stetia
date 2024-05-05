@@ -17,7 +17,7 @@
     </div>
     <div class="col-12 col-md-8">
         <div class="mb-3">
-            <label for="id_tratamiento" class="form-label" name="id">Id Articulo</label>
+            <label for="id_tratamiento" class="form-label" name="id">Id Tratamiento</label>
             <input type="text" value='<?php echo ($id + 1)?>' name='id' class="form-control" id="id_tratamiento" aria-describedby="id_articulo" disabled>
         </div>
         <div class="mb-3">

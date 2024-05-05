@@ -200,6 +200,14 @@ figure {
     width: 10rem;
     height: 10rem;
  }
+
+ #user_picture{
+   position: relative;
+   left: 10px;
+   height: 200px;
+   width: 200px;
+   margin: 0 auto; /* Centra horizontalmente */
+ }
   
 
 

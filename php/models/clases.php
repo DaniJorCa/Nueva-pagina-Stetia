@@ -1,4 +1,197 @@
 <?php
+
+#obtiene un array de objetos
+function get_object_from_table_by_dinamic_condition($con, $obj_type, $table, $condition, $inicio, $artXpag) {
+
+    //calculo del total de articulos
+    $stmtCount = $con->prepare("SELECT COUNT(*) as total FROM $table WHERE $condition");
+    $stmtCount->execute();
+    $num_total_registros = $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
+    $_SESSION['total_paginas'] = ceil($num_total_registros / $artXpag);
+
+    // Preparar la consulta SQL
+    $sql = "SELECT * FROM $table WHERE $condition LIMIT $inicio, $artXpag";
+    // Preparar la declaración
+    $statement = $con->prepare($sql);
+    
+    // Ejecutar la consulta
+    $statement->execute();
+
+    // Obtener los valores como un array asociativo
+    $objects_data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    // Array para almacenar los objetos recuperados
+    $objects = [];
+
+    // Construir objetos según el tipo especificado y agregarlos al array
+    foreach ($objects_data as $data) {
+        switch ($obj_type) {
+            case 'Usuario':
+                $object = new Usuario(
+                    $data['id'],
+                    $data['email'],
+                    $data['nombre'],
+                    $data['p_apellido'],
+                    $data['s_apellido'],
+                    $data['consultas'],
+                    $data['passwd'],
+                    $data['dni'],
+                    $data['telefono'],
+                    $data['direccion'],
+                    $data['provincia'],
+                    $data['localidad'],
+                    $data['cod_postal'],
+                    $data['perfil'],
+                    $data['img'],
+                    $data['puntos'],
+                    $data['baja']
+                );
+                break;
+            // Agrega más casos según los tipos de objetos que necesites
+            default:
+                // Si el tipo de objeto no está definido, lanzar una excepción
+                throw new Exception("Tipo de objeto no válido: $obj_type");
+        }
+
+        // Agregar el objeto al array
+        $objects[] = $object;
+    }
+
+    // Devolver los objetos recuperados
+    return $objects;
+}
+
+
+
+#Funcion que busca todos los objetos de cualquier tipo especificado y busca los que tienen un valor de columna similar a
+function get_object_from_table_by_value($con, $obj_type, $table, $column, $value, $inicio, $artXpag) {
+
+    //calculo del total de articulos
+    $stmtCount = $con->prepare("SELECT COUNT(*) as total FROM $table");
+    $stmtCount->execute();
+    $num_total_registros = $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
+    $_SESSION['total_paginas'] = ceil($num_total_registros / $artXpag);
+
+    // Preparar la consulta SQL
+    $sql = "SELECT * FROM $table WHERE $column LIKE :valor LIMIT $inicio, $artXpag";
+    // Preparar la declaración
+    $statement = $con->prepare($sql);
+
+    // Vincular el valor al marcador de posición en la consulta SQL
+    $parametro = is_string($value) ? PDO::PARAM_STR : PDO::PARAM_INT;
+    $statement->bindValue(':valor', "%$value%", $parametro);
+
+    // Ejecutar la consulta
+    $statement->execute();
+
+    // Obtener los valores como un array asociativo
+    $objects_data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    // Array para almacenar los objetos recuperados
+    $objects = [];
+
+    // Construir objetos según el tipo especificado y agregarlos al array
+    foreach ($objects_data as $data) {
+        switch ($obj_type) {
+            case 'Usuario':
+                $object = new Usuario(
+                    $data['id'],
+                    $data['email'],
+                    $data['nombre'],
+                    $data['p_apellido'],
+                    $data['s_apellido'],
+                    $data['consultas'],
+                    $data['passwd'],
+                    $data['dni'],
+                    $data['telefono'],
+                    $data['direccion'],
+                    $data['provincia'],
+                    $data['localidad'],
+                    $data['cod_postal'],
+                    $data['perfil'],
+                    $data['img'],
+                    $data['puntos'],
+                    $data['baja']
+                );
+                break;
+            // Agrega más casos según los tipos de objetos que necesites
+            default:
+                // Si el tipo de objeto no está definido, lanzar una excepción
+                throw new Exception("Tipo de objeto no válido: $obj_type");
+        }
+
+        // Agregar el objeto al array
+        $objects[] = $object;
+    }
+
+    // Devolver los objetos recuperados
+    return $objects;
+}
+
+
+
+function get_array_all_objects($con, $table, $object_name, $inicio, $artXpag) {
+    
+    //calculo del total de articulos
+    $stmtCount = $con->prepare("SELECT COUNT(*) as total FROM $table");
+    $stmtCount->execute();
+    $num_total_registros = $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
+    $_SESSION['total_paginas'] = ceil($num_total_registros / $artXpag);
+
+    $query = "SELECT * FROM $table";
+    $statement = $con->prepare($query);
+    $statement->execute();
+
+    $resultados = [];
+    while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+        // Crear un nuevo objeto del tipo correspondiente
+        switch ($object_name) {
+            case 'Usuario':
+                $objeto = new Usuario(
+                    $row['id'],
+                    $row['email'],
+                    $row['nombre'],
+                    $row['p_apellido'],
+                    $row['s_apellido'],
+                    $row['consultas'],
+                    null, // Contraseña
+                    $row['dni'],
+                    $row['telefono'],
+                    $row['direccion'],
+                    $row['provincia'],
+                    $row['localidad'],
+                    $row['cod_postal'],
+                    $row['perfil'],
+                    $row['img'],
+                    $row['puntos'],
+                    $row['baja']
+                );
+                break;
+            case 'Tratamiento':
+                $objeto = new Tratamiento(
+                    $row['id'],
+                    $row['nombre'],
+                    $row['descripcion'],
+                    $row['precio'],
+                    $row['zona_corp'],
+                    $row['img'],
+                    $row['baja']
+                );
+                break;
+            // Agregar más casos según sea necesario para otros tipos de objetos
+            default:
+                // Si el nombre del objeto no coincide, no se crea ningún objeto
+                $objeto = null;
+        }
+        // Agregar el objeto al array de resultados
+        $resultados[] = $objeto;
+    }
+
+    // Devolver el array de objetos
+    return $resultados;
+}
+
+
  // Clases genericas
 function formatear_precio($numero){
     // Convertir el número a float
@@ -72,7 +265,7 @@ function formatear_precio($numero){
 }
 
 function boolean_img_is_too_size($array){
-    return ($array['size'] > 10000000) ? true : false; 
+    return ($array['size'] > 15000000) ? true : false; 
 }
 
 
@@ -379,6 +572,8 @@ class Usuario {
     private ?int $perfil;
     private ?string $consultas;
     private ?string $img;
+    private ?int $puntos;
+    private ?int $baja;
                     
 
 
@@ -386,7 +581,7 @@ class Usuario {
     public function __construct(int $id, string $email, string $nombre,   string $p_apellido, string $s_apellido, 
                             $consultas = null, string $passwd = null, string $dni = null, int $telefono = null, string $direccion = null, 
                             string $provincia = null, string $localidad = null, int $cod_postal = null, int $perfil = 0, string $img = null, 
-                            ) {
+                            int $puntos = 0, int $baja = 0) {
         $this->id = $id;
         $this->email = $email;
         $this->nombre = $nombre;
@@ -402,6 +597,8 @@ class Usuario {
         $this->cod_postal = $cod_postal;
         $this->perfil = $perfil;
         $this->img = $img;
+        $this->puntos = $puntos;
+        $this->baja = $baja;
     }
 
 
@@ -444,11 +641,10 @@ class Usuario {
 
 
     public static function checkLog($email, $passwd){
-        $check;
+        $check = false;
         try{
             if(!isset($con)){
-                $con = Conexion::conectar_db();
-                
+                $con = Conexion::conectar_db();  
             } 
             $stmt = $con->prepare('SELECT * FROM usuarios WHERE  email = :email');
             $stmt->bindValue(':email', $email, PDO::PARAM_STR);
@@ -473,22 +669,24 @@ class Usuario {
                     $usuario['cod_postal'],
                     $usuario['perfil'],
                     $usuario['img'],
+                    $usuario['puntos'],
+                    $usuario['baja'],
                 );
 
-                return true;
+                $check = true;
             }else{
-                return false;
+                $check = false;
             }
-            
             return $check;
         }catch(PDOException $e){
             error_log("Error autentificacion de usuario ".$_SESSION['user_log']. "\n",3,'log/error.log');
-            return false;
+            return $check;
         }
     }
 
-    // Función para obtener un objeto Usuario por su ID
+    // Función para obtener un objeto Usuario por un valor
 public static function get_object_user_by_value($con, $row, $value) {
+
     // Preparar la consulta SQL
     $sql = "SELECT * FROM usuarios WHERE $row = :valor";
 
@@ -526,13 +724,13 @@ public static function get_object_user_by_value($con, $row, $value) {
         $user_data['cod_postal'],
         $user_data['perfil'],
         $user_data['img'],
-        
+        $user_data['puntos'],
+        $user_data['baja']
     );
 
     // Devolver el usuario
     return $user;
 }
-
 
 
 
@@ -563,13 +761,6 @@ public static function get_object_user_by_value($con, $row, $value) {
         }
     }
 
-    public function toArray(): array {
-        $valores = [];
-        foreach (get_object_vars($this) as $atributo => $valor) {
-            $valores[$atributo] = $valor;
-        }
-        return $valores;
-    }
 
     //SETTERS y GETTERS
 
@@ -678,6 +869,19 @@ public static function get_object_user_by_value($con, $row, $value) {
         return $this->img;
     }
 
+    public function setPuntos(?int $puntos) {
+        $this->img = $img;
+    }
+    public function getPuntos(): ?int {
+        return $this->puntos;
+    }
+    public function setBaja(?int $baja) {
+        $this->baja = $baja;
+    }
+    public function getBaja(): ?int {
+        return $this->baja;
+    }
+
     public function get_array_usuario(): array {
         return [
             'id' => $this->id,
@@ -689,7 +893,10 @@ public static function get_object_user_by_value($con, $row, $value) {
             'direccion' => $this->direccion,
             'provincia' => $this->provincia,
             'localidad' => $this->localidad,
-            'perfil' => $this->perfil
+            'perfil' => $this->perfil,
+            'img' => $this->img,
+            'puntos' => $this->puntos,
+            'baja' => $this->baja
         ];
     }
 }
@@ -854,15 +1061,17 @@ class Articulo {
     protected float $precio;
     protected int $iva;
     protected int $dto;
+    protected int $img;
     
 
 
-    public function __construct(string $id, string $nombre, float $precio, string $iva, string $dto) {
+    public function __construct(string $id, string $nombre, float $precio, string $iva, string $dto, string $img) {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->precio = $precio;
         $this->iva = $iva;
         $this->dto = $dto;
+        $this->img = $img;
     }
 
     //SETTERS Y GETTERS
@@ -901,15 +1110,46 @@ class Articulo {
     public function getDto(): int {
         return $this->dto;
     }
+    public function setImg(string $dto) {
+        $this->img = $img;
+    }
+    public function getImg(): string {
+        return $this->img;
+    }
 
     public function get_array_articulo(): array {
         return [
             'id' => $this->id,
             'nombre' => $this->nombre,
             'precio' => $this->precio,
-            'Iva' => $this->iva,
-            'Descuento' => $this->dto
+            'iva' => $this->iva,
+            'descuento' => $this->dto,
+            'imagen' => $this->img
         ];
+    }
+
+    public function toArray(): array {
+        $valores = [];
+        foreach (get_object_vars($this) as $atributo => $valor) {
+            // Si el valor es numérico, mantén su tipo de dato
+            if (is_numeric($valor)) {
+                $valores[$atributo] = $valor + 0; // Forzar a float
+            } else {
+                $valores[$atributo] = $valor;
+            }
+        }
+        return $valores;
+    }
+
+    public static function get_all_articles() {
+        try{
+            $con = Conexion::conectar_db();
+            $sql = $con->prepare("SELECT * FROM articulos");
+            $sql->execute();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);  
+        }catch (PDOException $e){
+            die('Error de conexión: ' . $e->getMessage());  
+        }
     }
 }
 

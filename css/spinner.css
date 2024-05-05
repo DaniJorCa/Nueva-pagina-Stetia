@@ -1,0 +1,16 @@
+:root {
+    --soft-pink: #EEABC4;
+    --main-pink: #ff97b7;
+    --main-blue: #73d2de;
+    --main-violet: #792359;
+    --main-rose_gold: #ffa88b;
+  }
+  
+
+.body-spinner{
+    background-color: var(--soft-pink) ;
+}
+
+.spinner-border{
+    color: var(--main-violet)
+}

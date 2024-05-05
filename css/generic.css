@@ -25,6 +25,15 @@ a{
 }  
 
 
+input{
+    max-height: 40px;
+}
+
+select{
+    max-height: 40px;
+}
+
+
 
 @media (min-width: 600px) and (max-width: 999px) {
     #form_logo_stetia{
@@ -33,5 +42,7 @@ a{
         
     }
 }  
+
+
 
 

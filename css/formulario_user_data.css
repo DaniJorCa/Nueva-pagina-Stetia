@@ -152,6 +152,7 @@ justify-items: center;
 align-items: center;
 }
 .contact-form-container {
+--bs-gutter-x: unset !important;
 display: grid;
 grid-template-columns: 1fr 1fr 1fr 1fr;
 grid-template-areas: "contact-us header header header" "contact-us address phone email" "contact-us contact-form contact-form contact-form";
@@ -174,3 +175,4 @@ grid-area: email;
 .contact-form {
 grid-area: contact-form;
 }
+

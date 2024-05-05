@@ -18,7 +18,7 @@
                 </svg>Mis Tratamientos</a> 
             </li>
             <li> 
-                <a href="#" class="nav-link link-dark">
+                <a href="home.php?type=_mis_puntos" class="nav-link link-dark">
                 <i class="fa-solid fa-ranking-star" style="color: #831959; width: 18px; height: 18px;"></i>
                 <use xlink:href="#table"></use>
                 </svg>Programa de puntos</a> 
@@ -32,23 +32,27 @@
             <li> 
                 <a href="#" id='recommend_stetia' class="nav-link link-dark">
                 <i class="fa-solid fa-envelope" style="color: #831959;"></i>
-                <i class="fa-solid fa-envelope-open-text" style="color: #831959; display: none;"></i>
                 <use xlink:href="#grid"></use>
                 </svg>Notificaciones</a> 
             </li>
             <li> 
                 <a href="home.php?type=_goods_maiteinance" id='recommend_stetia' class="nav-link link-dark">
                 <i class="fa-solid fa-person-digging" style="color: #831959; width: 18px; height: 18px;"></i>
-                <i class="fa-solid fa-envelope-open-text" style="color: #831959; display: none;"></i>
                 <use xlink:href="#grid"></use>
                 </svg>Mtto. de articulos</a> 
+            </li>
+
+            <li> 
+                <a href="home.php?type=_users_maiteinance" id='recommend_stetia' class="nav-link link-dark">
+                <i class="fa-solid fa-users" style="color: #831959; width: 18px; height: 18px;"></i>
+                <use xlink:href="#grid"></use>
+                </svg>Mtto. de usuarios</a> 
             </li>
         </ul>
     <hr>
     <div class="dropdown">
-    <a href="/es/docs/5.2/examples/sidebars/#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> <img src="https://github.com/mdo.png" alt="" class="rounded-circle me-2" width="32" height="32"> <strong>Mas opciones</strong> </a>
+    <a href="/es/docs/5.2/examples/sidebars/#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> <img src="<?php if($_SESSION['user_log']->getImg() !== null){echo $_SESSION['user_log']->getImg();} else{ echo "img/background/home_user.png";}?> " alt="" class="rounded-circle me-2" width="32" height="32"> <strong>Mas opciones</strong> </a>
     <ul class="dropdown-menu text-small shadow">
-    <li><a class="dropdown-item" href="/es/docs/5.2/examples/sidebars/#">Nuevo proyecto...</a></li>
     <li><a class="dropdown-item" href="/es/docs/5.2/examples/sidebars/#">Ajustes</a></li>
     <li><a class="dropdown-item" href="/es/docs/5.2/examples/sidebars/#">Perfil</a></li>
     <li>

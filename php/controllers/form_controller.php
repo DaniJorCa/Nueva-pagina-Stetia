@@ -16,9 +16,9 @@ function modificar_datos_usuario_regitrado(){
     require_once ('php/models/form_model.php');
     require_once('php/models/clases.php');
     if (!boolean_img_is_too_size($_FILES['imagen'])){
-        if(check_and_compressed_image($_FILES['imagen'], 'img/users/'.$_FILES['imagen']['name'] , $calidad_compresion = 75)){
+        if(check_and_compressed_image($_FILES['imagen'], 'img/users/user_'.$_SESSION['user_log']->getID().'.jpg' , $calidad_compresion = 75)){
             $registro_exitoso = modificar_usuario_registrado($_POST);
-            $_SESSION['user_log']->setImg("img/users/". $_FILES['imagen']['name']);
+            $_SESSION['user_log']->setImg('img/users/user_'.$_SESSION['user_log']->getID().'.jpg');
             if($registro_exitoso){
                 echo "<h3 class='text-center text-success'>Actualizacion realizada con éxito</h3>";
             }else{

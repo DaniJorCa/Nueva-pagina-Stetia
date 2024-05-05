@@ -4,19 +4,20 @@
             <div class="contact-us row">
                 <div class="contact-header row d-flex flex-column">
                     <div class="my-5 row col-12" id="personal_picture">
-                        <img class="upload_img"src='<?php echo $_SESSION['user_log']->getImg() ?>' alt="Imagen de perfil">
-                        <?php
-                        if($_SESSION['user_log']->getImg() == null){
-                            echo '<img id="preview" class="upload_img" src="img/background/home_user.png" alt="Vista Previa de Imagen" style="max-width: 100%; max-height: 300px;">';
-                           
-                        }
-                        ?>
+                        <?php if (!empty($_SESSION['user_log']->getImg())): ?>
+                            <img class="upload_img" src="<?php echo $_SESSION['user_log']->getImg(); ?>" alt="Imagen actual" id="current-image" >
+                        <?php else: ?>
+                            <img id="preview" class="upload_img" src="img/background/home_user.png" alt="Vista Previa de Imagen" style="max-width: 100%; max-height: 300px;">
+                        <?php endif; ?>
+
                         <div class="row col-12 d-flex justify-content-end align-items-end flex-column">
                         <form id="form_edit_personal_userFields" class="needs-validation" method="POST" action ="home.php?type=_edit_user_info" enctype="multipart/form-data" novalidate>
-                            <input type="file" name="imagen" id="imagen" style="display: none;" onchange="showPreview()">
-                            <label for="imagen" class="upload-link">
+                        
+                        <!-- Input de tipo file para cargar una nueva imagen -->
+                        <input type="file" name="imagen" id="imagen" style="display: none;" onchange="showPreview_edit_image()">
+                        <label for="imagen">
                             <i class="fa-solid fa-upload" style="color: #831959;"></i>
-                            </label>
+                        </label>
                         </div>
                     </div>
                     <div class='pers-corner col-12'>
