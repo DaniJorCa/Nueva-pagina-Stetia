@@ -4,7 +4,7 @@
 <span class='dinamic-cards'>
     <a href="home.php?type=_mostrar_tratamientos">
         <figure style="--c:#fff5">
-            <img src="img/happy-girl.jpg" alt="happy-girl">
+            <img src="img/happy-girl.png" alt="happy-girl">
             <figcaption>Tratamientos</figcaption>
         </figure>
     </a>    

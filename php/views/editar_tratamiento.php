@@ -1,13 +1,7 @@
-<?php $id =  $id = get_max_value_of_field('tratamientos', 'id')['max_field']; ?>
 <div class="header">
     <h1>Editar tratamiento</h1>
     <h2 class="text-center">Aqui puedes editar tu tratamiento</h2>
 </div>
-<?php
-$tratamiento_a_editar = Tratamiento::get_object_treatment_by_value($con, 'id', $_GET['id']);
-$_SESSION['id_treatment_to_modify'] = $_GET['id'];
-$_SESSION['img_treatment_to_modify'] = $tratamiento_a_editar->getImg();
-?>
 
 <form class="row col-12 container-fluid mt-3 needs-validation" method="POST" action='home.php?type=_update_treatment' enctype='multipart/form-data' novalidate>
     <div class="card mb-3 col-12 col-md-4">
@@ -27,7 +21,6 @@ $_SESSION['img_treatment_to_modify'] = $tratamiento_a_editar->getImg();
             </div>
         </div>
     </div>
-
 
     <div class="col-12 col-md-7">
         <div class="mb-3">
@@ -55,10 +48,22 @@ $_SESSION['img_treatment_to_modify'] = $tratamiento_a_editar->getImg();
             </div>
             <div class="form-floating mb-3" >
                 <select class="form-select" id="zona_corporal" aria-label="Floating label select example" name='zona_corp' required>
-                    <option value="<?php echo $tratamiento_a_editar->getZonaCorp() ?>" selected><?php echo $tratamiento_a_editar->getZonaCorp() ?></option>
-                    <option value="Facial">Facial</option>
-                    <option value="Corporal">Corporal</option>
-                    <option value="Piernas">Piernas</option>
+                    <?php
+                        if($tratamiento_a_editar->getZonaCorp() == 'Facial'){
+                            echo '<option value="' . $tratamiento_a_editar->getZonaCorp() . '" selected>' . $tratamiento_a_editar->getZonaCorp() . '</option>';
+                            echo '<option value="Corporal">Corporal</option>';
+                            echo '<option value="Piernas">Piernas</option>';
+                        }elseif($tratamiento_a_editar->getZonaCorp() == 'Corporal'){
+                            echo '<option value="' . $tratamiento_a_editar->getZonaCorp() . '" selected>' . $tratamiento_a_editar->getZonaCorp() . '</option>';
+                            echo '<option value="Facial">Facial</option>'; // Aquí estaba "Corporal"
+                            echo '<option value="Piernas">Piernas</option>';
+                        }else{
+                            echo '<option value="' . $tratamiento_a_editar->getZonaCorp() . '" selected>' . $tratamiento_a_editar->getZonaCorp() . '</option>';
+                            echo '<option value="Facial">Facial</option>';
+                            echo '<option value="Corporal">Corporal</option>'; // Aquí estaba "Piernas"
+                        }
+                        
+                    ?>
                 </select>
                 <label for="zona_corporal">Zona corporal</label>
             </div>
@@ -68,12 +73,19 @@ $_SESSION['img_treatment_to_modify'] = $tratamiento_a_editar->getImg();
         <option value="0" <?php if ($tratamiento_a_editar->getBaja() == 0) echo "selected"; ?>>Dar de alta</option>
         <option value="1" <?php if ($tratamiento_a_editar->getBaja() == 1) echo "selected"; ?>>Dar de baja</option>
     </select>
-    <label for="baja">¿Articulo de baja?</label>
+    <?php
+    if ($tratamiento_a_editar->getBaja() == 0){
+        echo '<label for="baja"> Articulo actualmente de alta. Quieres darlo de baja? </label>';
+    }else{
+        echo '<label for="baja"> Articulo actualmente de baja. Quieres darlo de alta? </label>';
+    }
+       
+    ?>
 </div>
-
         </div>
-        <div class="col-12 d-flex justify-content-center">
-        <button class="w-70 btn btn-lg btn-cta m-0" type="submit" name="form_contact">Editar tratamiento</button>
-    </div>
+        <div class="col-12 d-flex justify-content-evenly">
+            <button class="w-70 btn btn-lg btn-cta m-0" type="submit" name="form_contact">Editar tratamiento</button>
+            <button class="w-70 btn btn-lg btn-danger m-0" type="submit" name="form_contact"><i class="fa-solid fa-trash-can mx-2" style="color: #ffffff;"></i>Eliminar tratamiento</button>
+        </div>
     </div>
 </form>

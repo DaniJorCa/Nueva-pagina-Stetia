@@ -1,5 +1,28 @@
 <?php
 
+function delete_object_from_table_by_value($con, $table, $column, $value) {
+
+    try{
+       // Preparar la consulta SQL
+        $sql = "DELETE FROM $table WHERE $column LIKE :valor";
+        // Preparar la declaración
+        $statement = $con->prepare($sql);
+
+        // Vincular el valor al marcador de posición en la consulta SQL
+        $parametro = is_string($value) ? PDO::PARAM_STR : PDO::PARAM_INT;
+        $statement->bindValue(':valor', "%$value%", $parametro);
+
+        // Ejecutar la consulta
+        $statement->execute(); 
+        
+        return true;
+    }catch (PDOException $e){
+        error_log("Error al eliminar el usuario. \n". $e,3,'log/error.log');
+        return false;
+    }
+}
+
+
 #obtiene un array de objetos
 function get_object_from_table_by_dinamic_condition($con, $obj_type, $table, $condition, $inicio, $artXpag) {
 
@@ -46,6 +69,18 @@ function get_object_from_table_by_dinamic_condition($con, $obj_type, $table, $co
                     $data['puntos'],
                     $data['baja']
                 );
+                break;
+                case 'Articulo':
+                    $object = new Articulo(
+                    $data['id'],
+                    $data['nombre'],
+                    $data['descrip'],
+                    $data['precio'],
+                    $data['iva'],
+                    $data['dto'],
+                    $data['img'],
+                    $data['baja']
+                    );
                 break;
             // Agrega más casos según los tipos de objetos que necesites
             default:
@@ -114,6 +149,18 @@ function get_object_from_table_by_value($con, $obj_type, $table, $column, $value
                     $data['baja']
                 );
                 break;
+                case 'Articulo':
+                    $object = new Articulo(
+                    $data['id'],
+                    $data['nombre'],
+                    $data['descrip'],
+                    $data['precio'],
+                    $data['iva'],
+                    $data['dto'],
+                    $data['img'],
+                    $data['baja']
+                    );
+                break;
             // Agrega más casos según los tipos de objetos que necesites
             default:
                 // Si el tipo de objeto no está definido, lanzar una excepción
@@ -138,7 +185,7 @@ function get_array_all_objects($con, $table, $object_name, $inicio, $artXpag) {
     $num_total_registros = $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
     $_SESSION['total_paginas'] = ceil($num_total_registros / $artXpag);
 
-    $query = "SELECT * FROM $table";
+    $query = "SELECT * FROM $table LIMIT $inicio, $artXpag";
     $statement = $con->prepare($query);
     $statement->execute();
 
@@ -171,7 +218,7 @@ function get_array_all_objects($con, $table, $object_name, $inicio, $artXpag) {
                 $objeto = new Tratamiento(
                     $row['id'],
                     $row['nombre'],
-                    $row['descripcion'],
+                    $row['descrip'],
                     $row['precio'],
                     $row['zona_corp'],
                     $row['img'],
@@ -193,7 +240,10 @@ function get_array_all_objects($con, $table, $object_name, $inicio, $artXpag) {
 
 
  // Clases genericas
-function formatear_precio($numero){
+ function formatear_precio($numero){
+    // Reemplazar la coma por un punto (si está presente)
+    $numero = str_replace(',', '.', $numero);
+    
     // Convertir el número a float
     $numero = floatval($numero);
 
@@ -391,6 +441,10 @@ function insert_object_in_BBDD($con, $tabla, $objeto) {
 
         // Vincular los valores a los marcadores de posición y ejecutar la consulta
         foreach ($atributos as $campo => $valor) {
+            if ($valor instanceof DateTime) {
+                // Si el valor es un objeto DateTime, formatearlo adecuadamente
+                $valor = $valor->format('Y-m-d H:i:s');
+            }
             $statement->bindValue(":$campo", $valor, PDO::PARAM_STR);
         }
 
@@ -400,7 +454,7 @@ function insert_object_in_BBDD($con, $tabla, $objeto) {
         // Devolver el ID del último registro insertado
         return true;
     } catch (PDOException $e) {
-        // En caso de error, devolver false y manejar la excepción
+        error_log("Error al crear el objeto \n". $e,3,'log/error.log');
         return false;
     }
 }
@@ -519,15 +573,10 @@ function exist_object_in_BBDD($con, $tabla, $key, $value) {
 }
 
 
-
-
-
-
-
 function get_max_value_of_field($tabla, $field) {
     try{
         $con = Conexion::conectar_db();
-        $sql = $con->prepare("SELECT MAX($field) AS max_field FROM $tabla");
+        $sql = $con->prepare("SELECT MAX(CAST($field AS INTEGER)) AS max_field FROM $tabla");
         $sql->execute();
         return $sql->fetch(PDO::FETCH_ASSOC);
     }catch (PDOException $e){
@@ -574,14 +623,18 @@ class Usuario {
     private ?string $img;
     private ?int $puntos;
     private ?int $baja;
+    private \DateTime $fecha_alta;
                     
-
-
 
     public function __construct(int $id, string $email, string $nombre,   string $p_apellido, string $s_apellido, 
                             $consultas = null, string $passwd = null, string $dni = null, int $telefono = null, string $direccion = null, 
                             string $provincia = null, string $localidad = null, int $cod_postal = null, int $perfil = 0, string $img = null, 
-                            int $puntos = 0, int $baja = 0) {
+                            int $puntos = 0, int $baja = 0, $fecha_alta = null) {
+
+        if($fecha_alta == null){
+            $fecha_alta = new \DateTime();
+        }
+                                
         $this->id = $id;
         $this->email = $email;
         $this->nombre = $nombre;
@@ -599,6 +652,7 @@ class Usuario {
         $this->img = $img;
         $this->puntos = $puntos;
         $this->baja = $baja;
+        $this->fecha_alta = $fecha_alta;
     }
 
 
@@ -625,6 +679,19 @@ class Usuario {
                 return false;
             }
         }
+    }
+
+    public function toArray(): array {
+        $valores = [];
+        foreach (get_object_vars($this) as $atributo => $valor) {
+            // Si el valor es numérico, mantén su tipo de dato
+            if (is_numeric($valor)) {
+                $valores[$atributo] = $valor + 0; // Forzar a float
+            } else {
+                $valores[$atributo] = $valor;
+            }
+        }
+        return $valores;
     }
 
     public static function get_all_users() {
@@ -700,7 +767,6 @@ public static function get_object_user_by_value($con, $row, $value) {
         $statement->bindValue(':valor', $value, PDO::PARAM_INT);
     }
     
-
     // Ejecutar la consulta
     $statement->execute();
 
@@ -1058,20 +1124,24 @@ class Tratamiento {
 class Articulo {
     protected int $id;
     protected string $nombre;
+    protected string $descrip;
     protected float $precio;
     protected int $iva;
     protected int $dto;
-    protected int $img;
+    protected ?string $img;
+    protected ?int $baja;
     
 
 
-    public function __construct(string $id, string $nombre, float $precio, string $iva, string $dto, string $img) {
+    public function __construct(string $id, string $nombre, string $descrip, float $precio, string $iva, string $dto, string $img = '', int $baja = 0) {
         $this->id = $id;
         $this->nombre = $nombre;
+        $this->descrip = $descrip;
         $this->precio = $precio;
         $this->iva = $iva;
         $this->dto = $dto;
         $this->img = $img;
+        $this->baja = $baja;
     }
 
     //SETTERS Y GETTERS
@@ -1088,6 +1158,13 @@ class Articulo {
     }
     public function getNombre(): string {
         return $this->nombre;
+    }
+
+    public function setDescrip(string $descrip) {
+        $this->descrip = $descrip;
+    }
+    public function getDescrip(): string {
+        return $this->descrip;
     }
 
     public function setPrecio(float $precio) {
@@ -1116,6 +1193,12 @@ class Articulo {
     public function getImg(): string {
         return $this->img;
     }
+    public function setBaja(int $baja) {
+        $this->baja = $baja;
+    }
+    public function getBaja(): int {
+        return $this->baja;
+    }
 
     public function get_array_articulo(): array {
         return [
@@ -1124,8 +1207,47 @@ class Articulo {
             'precio' => $this->precio,
             'iva' => $this->iva,
             'descuento' => $this->dto,
-            'imagen' => $this->img
+            'imagen' => $this->img,
+            'baja' => $this->baja
         ];
+    }
+
+    public static function get_object_good_by_value($con, $row, $value) {
+
+        // Preparar la consulta SQL
+        $sql = "SELECT * FROM articulos WHERE $row = :valor";
+    
+        // Preparar la declaración
+        $statement = $con->prepare($sql);
+    
+        // Vincular el valor del ID al marcador de posición en la consulta SQL
+        if(gettype($value) === 'string'){
+            $statement->bindValue(':valor', $value, PDO::PARAM_STR); 
+        }else{
+            $statement->bindValue(':valor', $value, PDO::PARAM_INT);
+        }
+        
+    
+        // Ejecutar la consulta
+        $statement->execute();
+    
+        // Obtener los valores del usuario como un array asociativo
+        $articulo_data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Construir un objeto Usuario con los valores obtenidos
+        $articulo = new Articulo(
+            $articulo_data['id'],
+            $articulo_data['nombre'],
+            $articulo_data['descrip'],
+            $articulo_data['precio'],
+            $articulo_data['iva'],
+            $articulo_data['dto'],
+            $articulo_data['img'],
+            $articulo_data['baja']
+        );
+    
+        // Devolver el usuario
+        return $articulo;
     }
 
     public function toArray(): array {
@@ -1141,15 +1263,39 @@ class Articulo {
         return $valores;
     }
 
-    public static function get_all_articles() {
+    public static function get_all_articles($inicio, $artXpag) {
         try{
             $con = Conexion::conectar_db();
-            $sql = $con->prepare("SELECT * FROM articulos");
+            $sql = $con->prepare("SELECT * FROM articulos LIMIT $inicio, $artXpag");
+
+            $stmtCount = $con->prepare("SELECT COUNT(*) as total FROM articulos");
+            $stmtCount->execute();
+            $num_total_registros = $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
+            $_SESSION['total_paginas'] = ceil($num_total_registros / $artXpag);
+
             $sql->execute();
-            return $sql->fetchAll(PDO::FETCH_ASSOC);  
+            $resultados =  $sql->fetchAll(PDO::FETCH_ASSOC); 
+            $articulos = [];
+
+            foreach ($resultados as $fila) {
+                $articulo = new Articulo(
+                    $fila['id'],
+                    $fila['nombre'],
+                    $fila['descrip'],
+                    $fila['precio'],
+                    $fila['iva'],
+                    $fila['dto'],
+                    $fila['img']
+                );
+
+                $articulos[] = $articulo; 
+            }
+
+            return $articulos;
         }catch (PDOException $e){
-            die('Error de conexión: ' . $e->getMessage());  
+                die('Error de conexión: ' . $e->getMessage());  
         }
+
     }
 }
 

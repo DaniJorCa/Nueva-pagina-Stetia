@@ -1,3 +1,23 @@
+<?php
+require_once('php/models/clases.php');
+require_once('php/security/security.php');
+require_once ('php/controllers/tratamientos_controller.php');
+require_once  ('php/controllers/form_controller.php');
+require_once  ('php/controllers/superUser_controller.php');
+require_once  ('php/controllers/user_controller.php');
+
+if(isset($_GET['type'])){
+    $type = $_GET['type'];
+    switch ($type) {
+        case '_delete_user';
+            delete_user();
+            break;
+    }
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,16 +33,20 @@
         <link href="css/call_to_action.css" rel="stylesheet">
         <link href="css/aside.css" rel="stylesheet">
         <link href="css/formulario_user_data.css" rel="stylesheet">
+        <link href="css/tablas.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+        <link href="assets/css/style.css" rel="stylesheet">
+
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
         
     </head>
-    <body class="row d-flex justify-content-center">
+    <body class="row d-flex justify-content-center fadeIn" id="content" >
 <?php
-require_once('php/models/clases.php');
-require_once('php/security/security.php');
-require_once ('php/controllers/tratamientos_controller.php');
-require_once  ('php/controllers/form_controller.php');
-require_once  ('php/controllers/superUser_controller.php');
-require_once  ('php/controllers/user_controller.php');
+
 include_once ('php/views/header.html');
 ?>
 <div class='div-flex-nocolumn'>
@@ -35,8 +59,14 @@ include  ('php/views/aside_bar.php');
     if(isset($_GET['msg']) ? $message = $_GET['msg']: '');
     if(isset($message)){
        switch ($message) {
+            case '_del_err';
+                print("Error al eliminar el usuario");
+                break;
+            case '_del_success';
+                print("<h3 class='text-success fs-2 my-3 text-center'>Usuario eliminado con éxito</h3>");
+                break;
             case 'len_err';
-                print("Error en longitudes en el formulario");
+                print("<h3 class='text-success fs-2 my-3 text-center'>Error en longitudes en el formulario</h3>");
                 break;
             default: 
                 print("");
@@ -46,6 +76,12 @@ include  ('php/views/aside_bar.php');
     if(isset($_GET['type'])){
         $type = $_GET['type'];
         switch ($type) {
+            case '_status_global';
+                status_global();
+                break;
+            case '_update_articulo';
+                update_articulos();
+                break;
             case '_mostrar_articulos';
                 mostrar_articulos();
                 break;
@@ -60,10 +96,16 @@ include  ('php/views/aside_bar.php');
                 break; 
             case '_editar_tratamiento';
                 edit_treatment();
-                break; 
+                break;
             case '_upload_treatment';
                 upload_treatment();
-                break; 
+                break;
+            case '_upload_articulo';
+                upload_articulo();
+                break;
+            case '_nuevo_articulo';
+                nuevo_articulo();
+                break;     
             case '_nuevo_tratamiento';
                 new_treatment();
                 break;
@@ -92,10 +134,21 @@ include  ('php/views/aside_bar.php');
 <?php
     include ('php/views/footer.html');
 ?>
+        <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+        <script src="assets/vendor/aos/aos.js"></script>
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+        <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+        <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+        <script src="assets/vendor/php-email-form/validate.js"></script>
+
+        <script src="js/transition.js"></script>
         <script src="js/tablas.js"></script>
         <script src="js/upload_img.js"></script>
         <script src="bootstrap_css/js/bootstrap.bundle.min.js"></script>
         <script src="js/validity_form.js"></script>
         <script src="js/busqueda_selectiva.js"></script>
+
+        <script src="assets/js/main.js"></script>
     </body>
 </html>

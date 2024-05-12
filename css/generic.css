@@ -8,7 +8,19 @@
     --main-blue: #73d2de;
     --main-violet: #792359;
     --main-rose_gold: #ffa88b;
+    --main-soft_rose: #ffc7b4;
+}
+
+.fadeIn {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out; /* Transición de 1 segundo */
   }
+
+.fadeIn.active {
+    opacity: 1;
+}
+
+
   
 
 main{
@@ -29,10 +41,39 @@ input{
     max-height: 40px;
 }
 
-select{
-    max-height: 40px;
+
+.card-text{
+    min-height: 180px;
 }
 
+.icon{
+    height: 80px;
+    width: 80px;
+    margin-right: 10px;
+}
+
+.titulo_h1{
+    line-height: 80px;
+}
+
+.icono{
+    font-size: 2.1em;
+}
+
+.purecounter-master{
+    font-size: 2em;
+}
+
+.card-status{
+    background-color: var(--main-soft_rose);
+    border: 3px solid;
+    border-color: var(--main-violet);
+    
+}
+
+.text-card-status{
+    min-height: 90px;
+}
 
 
 @media (min-width: 600px) and (max-width: 999px) {
@@ -42,6 +83,8 @@ select{
         
     }
 }  
+
+
 
 
 

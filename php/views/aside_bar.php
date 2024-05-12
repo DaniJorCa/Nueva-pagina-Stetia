@@ -6,10 +6,10 @@
     <hr>
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item"> 
-                <a href="home.php?type=_personal_corner" class="nav-link active" aria-current="page">
+                <a href="home.php?type=_personal_corner" class="nav-link link-dark" aria-current="page">
                     <i class="fa-solid fa-user-pen" style="color: #831959; width: 18px; height: 18px;"></i>
                     <use xlink:href="#home"></use>
-                    </svg>Home</a> 
+                    </svg>Datos Personales</a> 
             </li>
             <li class="nav-item"> 
                 <a href="home.php?type=_mis_tratamientos" class="nav-link link-dark">
@@ -47,6 +47,13 @@
                 <i class="fa-solid fa-users" style="color: #831959; width: 18px; height: 18px;"></i>
                 <use xlink:href="#grid"></use>
                 </svg>Mtto. de usuarios</a> 
+            </li>
+
+            <li> 
+                <a href="home.php?type=_status_global" id='recommend_stetia' class="nav-link link-dark">
+                <i class="fa-solid fa-scale-balanced"style="color: #831959; width: 18px; height: 18px;"></i>
+                <use xlink:href="#grid"></use>
+                </svg>Status global</a> 
             </li>
         </ul>
     <hr>

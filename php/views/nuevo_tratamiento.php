@@ -1,4 +1,5 @@
-<?php $id =  $id = get_max_value_of_field('tratamientos', 'id')['max_field']; ?>
+<?php $id =  $id = get_max_value_of_field('tratamientos', 'id')['max_field'];?>
+
 <div class="header">
     <h1>Nuevo tratamiento</h1>
     <h2 class="text-center">Aqui puedes crear nuevos tratamientos</h2>

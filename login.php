@@ -247,7 +247,7 @@ if(isset($message)){
 <body cz-shortcut-listen="true">
 
 <form method="POST" action="conexion.php">
-<img class="mb-4" src="img/logo_stetia.png" alt="" width="25%" height="25%">
+<a href='index.php'><img class="mb-4" src="img/logo_stetia.png" alt="" width="25%" height="25%"></a>
 <img class="mb-4 ms-3" src="img/letras_stetia.png" alt="" width="60%" height="60%">
 <h1 class="h3 mb-3 fw-normal">Por favor, registrese</h1>
 <div class="form-floating">
@@ -266,7 +266,7 @@ if(isset($message)){
   <a href='sign_in.php' class='text-center my-2'>¿Todavia no eres usuario? Regístrate</a>
   <a href='forgot_passwd.php' class='text-center'>Olvidé mi contraseña</a>
 </div>
-<p class="mt-5 mb-3 text-muted">© 2023–2024</p>
+<p class="mt-5 mb-3 text-muted text-center">© 2023–2024</p>
 </form>
 </main>
 <script src="bootstrap_css/js/bootstrap.min.js"></script>
