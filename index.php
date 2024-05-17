@@ -31,7 +31,7 @@ require_once  ('php/controllers/form_controller.php');
 <!DOCTYPE html>
 <html>
     <head>
-        
+        <link rel="stylesheet" href="css/chatBot.css">
         <meta charset="UTF-8" lang="es">
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon_stetia.ico">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
@@ -64,7 +64,9 @@ require_once  ('php/controllers/form_controller.php');
     include ('php/views/testimonial.html');
     include ('php/views/personal_stetia.html');
     include ('php/views/form_contacto.html');
+    include ('php/views/chat_bot.html');
 ?>
+
    
     </main>
 <?php   
@@ -73,6 +75,12 @@ require_once  ('php/controllers/form_controller.php');
 ?>
         <script src="bootstrap_css/js/bootstrap.bundle.min.js"></script>
         <script src="js/validity_form.js"></script>
+
+        <!-- cookies JS File -->
+        <script type="text/javascript" src="js/generic.js"></script>
+
+        <!-- chatBot JS File -->
+        <script type="text/javascript" src="js/chatBot.js"></script>
 
          <!-- Vendor JS Files -->
         <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>

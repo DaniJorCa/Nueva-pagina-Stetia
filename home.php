@@ -22,6 +22,7 @@ if(isset($_GET['type'])){
 <html>
     <head>
         <meta charset="UTF-8" lang="es">
+        <link rel="stylesheet" href="css/chatBot.css">
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon_stetia.ico">
         <link href="css/footer.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
@@ -52,6 +53,7 @@ include_once ('php/views/header.html');
 <div class='div-flex-nocolumn'>
 <?php
 include  ('php/views/aside_bar.php');
+
 ?>
 <main class="p-4  my-3">
 <?php
@@ -128,8 +130,11 @@ include  ('php/views/aside_bar.php');
                 include ('php/views/tratamientos_facial.html');
         }  
     }
+
+include ('php/views/chat_bot.html');  
 ?>
 </div>
+
 </main>
 <?php
     include ('php/views/footer.html');
@@ -141,6 +146,11 @@ include  ('php/views/aside_bar.php');
         <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
         <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
         <script src="assets/vendor/php-email-form/validate.js"></script>
+
+        <!-- cookies JS File -->
+        <script type="text/javascript" src="js/generic.js"></script>
+        <!-- chatBot JS File -->
+        <script type="text/javascript" src="js/chatBot.js"></script>
 
         <script src="js/transition.js"></script>
         <script src="js/tablas.js"></script>

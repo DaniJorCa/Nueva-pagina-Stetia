@@ -146,10 +146,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    const checkboxMaster = document.getElementById('checkboxMaster');
-    const checkboxBaja = document.getElementById('checkboxBaja');
-    const estadoCheckboxBaja = localStorage.getItem('miCheckboxBajaEstado');
-    const estadoCheckboxMaster = localStorage.getItem('miCheckboxMasterEstado');
+    let checkboxMaster = document.getElementById('checkboxMaster');
+    let checkboxBaja = document.getElementById('checkboxBaja');
+    let estadoCheckboxBaja = localStorage.getItem('miCheckboxBajaEstado');
+    let estadoCheckboxMaster = localStorage.getItem('miCheckboxMasterEstado');
 
 
    
@@ -185,37 +185,38 @@ document.addEventListener('DOMContentLoaded', function() {
         url_limpiaBaja = urlBaja;
     }
 
-
-    if (estadoCheckboxMaster === 'true' && estadoCheckboxBaja === 'true') {
-        checkboxMaster.checked = true;
-        checkboxBaja.checked = true;
-        // Ambos checkboxes están activados
-        if (!window.location.href.includes('&show_masters')) {
-            // Si no está presente, agregar el parámetro '&show_masters' a la URL
-            url_a_redirigir = url_limpiaBaja + '&show_masters' + '&show_lows';
-            mostrarSpinnerYRedirigir(url_a_redirigir);
-            
-        }
-        if (!window.location.href.includes('&show_lows')) {
-            // Si no está presente, agregar el parámetro '&show_lows' a la URL
-            window.location.href = url_limpiaBaja + '&show_lows';
-        }
-    } else if (estadoCheckboxMaster === 'true') {
-        // Solo el checkbox Master está activado
-        checkboxMaster.checked = true;
-        if (!window.location.href.includes('&show_masters')) {
-            // Si no está presente, agregar el parámetro '&show_masters' a la URL
-            url_a_redirigir = url_limpiaBaja + '&show_masters';
-            mostrarSpinnerYRedirigir(url_a_redirigir);
-        }
-    } else if (estadoCheckboxBaja === 'true') {
-        checkboxBaja.checked = true;
-        if (!window.location.href.includes('&show_lows')) {
-            // Si no está presente, agregar el parámetro '&show_lows' a la URL
-            url_a_redirigir = url_limpiaBaja + '&show_lows';
-            mostrarSpinnerYRedirigir(url_a_redirigir);
+    if (checkboxMaster) {
+        if (estadoCheckboxMaster === 'true' && estadoCheckboxBaja === 'true') {
+            checkboxMaster.checked = true;
+            checkboxBaja.checked = true;
+            // Ambos checkboxes están activados
+            if (!window.location.href.includes('&show_masters')) {
+                // Si no está presente, agregar el parámetro '&show_masters' a la URL
+                url_a_redirigir = url_limpiaBaja + '&show_masters' + '&show_lows';
+                mostrarSpinnerYRedirigir(url_a_redirigir);
+            }
+            if (!window.location.href.includes('&show_lows')) {
+                // Si no está presente, agregar el parámetro '&show_lows' a la URL
+                window.location.href = url_limpiaBaja + '&show_lows';
+            }
+        } else if (estadoCheckboxMaster === 'true') {
+            // Solo el checkbox Master está activado
+            checkboxMaster.checked = true;
+            if (!window.location.href.includes('&show_masters')) {
+                // Si no está presente, agregar el parámetro '&show_masters' a la URL
+                url_a_redirigir = url_limpiaBaja + '&show_masters';
+                mostrarSpinnerYRedirigir(url_a_redirigir);
+            }
+        } else if (estadoCheckboxBaja === 'true') {
+            checkboxBaja.checked = true;
+            if (!window.location.href.includes('&show_lows')) {
+                // Si no está presente, agregar el parámetro '&show_lows' a la URL
+                url_a_redirigir = url_limpiaBaja + '&show_lows';
+                mostrarSpinnerYRedirigir(url_a_redirigir);
+            }
         }
     }
+    
     
   
 

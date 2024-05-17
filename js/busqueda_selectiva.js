@@ -1,16 +1,20 @@
 document.addEventListener("DOMContentLoaded", function() {  
 
+    let selectedOption = ""
+
     let campo_busqueda = document.getElementById('search');
     let boton_busqueda = document.getElementById('btn_search');
     let desplegable_type = document.getElementById('type-select');
     if(desplegable_type){
         let selectedIndex = desplegable_type.selectedIndex; 
-        let selectedOption = desplegable_type.options[selectedIndex];  
+        selectedOption = desplegable_type.options[selectedIndex];  
     }
     
     
-    
-    let tipo = selectedOption.value;
+    if(selectedOption){
+        let tipo = selectedOption.value;
+    }
+ 
     let type = '';
     let busqueda = '';
   
@@ -52,17 +56,23 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
-  
-    desplegable_type.addEventListener('change', () => {
+    if(desplegable_type){
+      desplegable_type.addEventListener('change', () => {
         let selectedIndex = desplegable_type.selectedIndex;
         let selectedOption = desplegable_type.options[selectedIndex];
         tipo = selectedOption.value;
         type = '&search_type=' + tipo + '&search=';
         busqueda = url_final + type;
-    });
-  
-    campo_busqueda.addEventListener('input',  () => {
+    });  
+
+
+    }
+    
+    if(campo_busqueda){
+        campo_busqueda.addEventListener('input',  () => {
         boton_busqueda.href = busqueda + campo_busqueda.value;
-    }); 
+        }); 
+    }
+    
 
 });
