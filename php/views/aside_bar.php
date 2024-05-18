@@ -55,16 +55,23 @@
                 <use xlink:href="#grid"></use>
                 </svg>Status global</a> 
             </li>
+
+            <li> 
+                <a href="home.php?type=_status_chatbot" id='recommend_stetia' class="nav-link link-dark">
+                <i class="fa-solid fa-robot"style="color: #831959; width: 18px; height: 18px;"></i>
+                <use xlink:href="#grid"></use>
+                </svg>Status Chatbot</a>
+            </li>
         </ul>
     <hr>
     <div class="dropdown">
-    <a href="/es/docs/5.2/examples/sidebars/#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> <img src="<?php if($_SESSION['user_log']->getImg() !== null){echo $_SESSION['user_log']->getImg();} else{ echo "img/background/home_user.png";}?> " alt="" class="rounded-circle me-2" width="32" height="32"> <strong>Mas opciones</strong> </a>
-    <ul class="dropdown-menu text-small shadow">
-    <li><a class="dropdown-item" href="/es/docs/5.2/examples/sidebars/#">Ajustes</a></li>
-    <li><a class="dropdown-item" href="/es/docs/5.2/examples/sidebars/#">Perfil</a></li>
-    <li>
-    <hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item" href="exit.php">desconectar</a></li>
-    </ul>
+        <a href="/es/docs/5.2/examples/sidebars/#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> <img src="<?php if($_SESSION['user_log']->getImg() !== null){echo $_SESSION['user_log']->getImg();} else{ echo "img/background/home_user.png";}?> " alt="" class="rounded-circle me-2" width="32" height="32"> <strong>Mas opciones</strong> </a>
+        <ul class="dropdown-menu text-small shadow">
+            <li><a class="dropdown-item" href="/es/docs/5.2/examples/sidebars/#">Ajustes</a></li>
+            <li><a class="dropdown-item" href="/es/docs/5.2/examples/sidebars/#">Perfil</a></li>
+            <li>
+            <hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="exit.php">desconectar</a></li>
+        </ul>
     </div>
-    </div>
+</div>

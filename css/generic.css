@@ -65,7 +65,7 @@ input{
 }
 
 .card-status{
-    background-color: var(--main-soft_rose);
+    background-color: rgb(233, 236, 239);
     border: 3px solid;
     border-color: var(--main-violet);
     

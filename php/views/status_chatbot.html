@@ -1,0 +1,82 @@
+<div id="spinner" style="display: none; height: 100vh; justify-content: center; align-items: center;">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Cargando</span>
+    </div>
+</div>
+<div id="oculto">
+    <div class="d-flex justify-content-center">
+        <img src="img/icons/chatbot.png" class="icon">
+        <h1 class="text-center titulo_h1">Status</h1>
+    </div>
+    <h3 class="text-center">Status Chatbot</h3>
+
+    <div class="row col-12 d-flex justify-content-center my-3">
+        <div class="row card col-12 col-md-3 mx-2 d-flex card-status my-2">
+            <div class="col-12 ms-1 mt-3 p-0 count-box">
+                <i class="bi bi-floppy icono col-4" style="color: #831959;"></i>
+                <p class="text-center text-card-status"><strong>Historial conversaciones</strong></p>
+            </div>
+            <div class="col-12 d-flex justify-content-center flex-column my-3">
+                    <button class="w-70 btn btn-md btn-cta mx-1" id="download_history">Descargar historial</button>
+                    <button class="w-70 btn btn-md btn-cta m-0">Borrar historial conversaciones</button>
+                </div>
+        </div>
+        <div class="row card col-12 col-md-3 mx-2 d-flex card-status my-2">
+            <div class="row col-12">
+                <div class="col-12 d-flex align-items-center justify-content-center flex-column mt-3">
+                    <i class="bi bi-translate icono me-2 col-12" style="color: #831959; font-size: 2rem;"></i>
+                    <p class="text-center text-card-status m-0"><strong>Prompt Chatbot</strong></p>
+                </div>
+                <div class="col-12">
+                    <p class="text-center">Cambia la manera en que se comporta el Chatbot</p>
+                </div>
+                <div class="col-12 d-flex justify-content-center">
+                    <button class="w-70 btn btn-md btn-cta" id="btn-prompt">Modificar prompt</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row card col-12 col-md-3 mx-2 d-flex card-status my-2">        
+            <div class="row col-12">
+                <div class="col-12 ms-1 mt-3 p-0 count-box">
+                    <i class="fa-solid fa-hand-holding-dollar icono col-4" style="color: #831959;"></i>
+                    <span data-purecounter-start="0" data-purecounter-end="360" data-purecounter-duration="2" class="purecounter purecounter-master"></span><span class="fs-2">€</span>
+                </div>
+                <div class="row d-flex col-12 align-items-center container-height">
+                    <p class="text-center text-card-status col-12"><strong>Compras del último mes</strong></p>
+                </div>
+                <div class="col-12 d-flex justify-content-center my-3">
+                    <button class="w-70 btn btn-md btn-cta m-0">Ver listado compras</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="visible">
+    <div id="connection_err" class="text-center row col-12 justify-content-center flex-row align-items-center">
+        <div class="col-1">
+            <i class="fa-solid fa-triangle-exclamation fa-beat-fade mx-2" style="color: #AD830E;"></i>
+        </div>
+        <div class="col-5"> 
+            <h3 class="text-danger fs-2 my-2 text-center">Error de conexión</h3>
+        </div>
+        
+        
+    </div>
+    <h1 class="text-center">Control del Prompt</h1>
+    <div class="mb-3">
+        <label for="actual_prompt" class="form-label">Prompt Actual *</label>
+        <textarea id="actual_prompt" class="form-control" rows="5"></textarea>
+    </div>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="new_prompt" class="form-label">Prompt Nuevo</label>
+            <textarea id="new_prompt" class="form-control" rows="5"></textarea>
+            <button type="button" id="btn_new_prompt" class="my-2 w-70 btn btn-md btn-cta m-0">Enviar nuevo Prompt</button>
+        </div>
+    </form>
+    <div>
+        <p>* Parte a modificar</p>
+    </div>
+</div>

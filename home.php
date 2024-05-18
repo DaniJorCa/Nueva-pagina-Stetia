@@ -78,6 +78,9 @@ include  ('php/views/aside_bar.php');
     if(isset($_GET['type'])){
         $type = $_GET['type'];
         switch ($type) {
+            case '_status_chatbot';
+                status_chatbot();
+                break;
             case '_status_global';
                 status_global();
                 break;

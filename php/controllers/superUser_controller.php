@@ -313,4 +313,10 @@ function show_users(){
     function status_global(){
         require('php/views/status_global.php');
     }
+
+    function status_chatbot(){
+
+
+        require('php/views/status_chatbot.html');
+    }
 ?>
