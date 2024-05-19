@@ -201,7 +201,7 @@
 
 #connection_err{
     background-color: rgb(233, 217, 127);
-    height: 60px;
+    height: auto;
     border-radius: 10px;
 }
 
@@ -211,4 +211,9 @@
 
 #connection_err > h3{
     vertical-align: middle;
+}
+
+#btn-prompt{
+    position: relative;
+    bottom: 10px;
 }

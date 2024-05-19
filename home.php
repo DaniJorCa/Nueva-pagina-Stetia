@@ -61,6 +61,12 @@ include  ('php/views/aside_bar.php');
     if(isset($_GET['msg']) ? $message = $_GET['msg']: '');
     if(isset($message)){
        switch ($message) {
+            case '_err_json_eliminado';
+                print("<h3 class='text-danger fs-2 my-3 text-center'>Error al intentar eliminar el historial</h3>");
+                break;
+            case '_json_eliminado';
+                print("<h3 class='text-success fs-2 my-3 text-center'>Historial eliminado con éxito</h3>");
+                break;
             case '_del_err';
                 print("Error al eliminar el usuario");
                 break;

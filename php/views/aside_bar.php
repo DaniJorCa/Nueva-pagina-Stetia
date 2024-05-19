@@ -1,4 +1,4 @@
-<div class="d-flex flex-column flex-shrink-0 p-3 bg-light" id="aside-bar" style="width: 280px;">
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-light col-1 col-lg-3 order-lg-start" id="aside-bar" style="width: 280px;">
     <a href="/es/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
         <use xlink:href="#bootstrap"></use>
         </svg> <span class="fs-4 text-center">Hola  <?php if($_SESSION['user_log']->getNombre() != ''){ echo $_SESSION['user_log']->getNombre(); }else{ echo("**Pendiente**");} ?></span> 
@@ -57,7 +57,7 @@
             </li>
 
             <li> 
-                <a href="home.php?type=_status_chatbot" id='recommend_stetia' class="nav-link link-dark">
+                <a href="home.php?type=_status_chatbot" id='status_chatbot_main' class="nav-link link-dark">
                 <i class="fa-solid fa-robot"style="color: #831959; width: 18px; height: 18px;"></i>
                 <use xlink:href="#grid"></use>
                 </svg>Status Chatbot</a>
