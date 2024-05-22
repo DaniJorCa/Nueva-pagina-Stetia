@@ -99,7 +99,7 @@ function get_object_from_table_by_dinamic_condition($con, $obj_type, $table, $co
 
 
 #Funcion que busca todos los objetos de cualquier tipo especificado y busca los que tienen un valor de columna similar a
-function get_object_from_table_by_value($con, $obj_type, $table, $column, $value, $inicio, $artXpag) {
+function get_object_from_table_by_value($con, $obj_type, $table, $column, $value, $inicio = 1, $artXpag = 1) {
 
     //calculo del total de articulos
     $stmtCount = $con->prepare("SELECT COUNT(*) as total FROM $table");
@@ -487,6 +487,10 @@ function update_object_in_BBDD($con, $tabla, $objeto, $where_key, $where_value) 
 
         // Vincular los valores a los marcadores de posición y ejecutar la consulta
         foreach ($atributos as $campo => $valor) {
+            if ($valor instanceof DateTime) {
+                // Si el valor es un objeto DateTime, formatearlo adecuadamente
+                $valor = $valor->format('Y-m-d H:i:s');
+            }
             if ($valor !== null) {
                 // Determinar el tipo de dato correcto
                 $parametro = is_int($valor) ? PDO::PARAM_INT : (is_float($valor) ? PDO::PARAM_STR : PDO::PARAM_STR);
@@ -717,6 +721,7 @@ class Usuario {
             $stmt->bindValue(':email', $email, PDO::PARAM_STR);
             $stmt->execute();
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+            var_dump($usuario);
 
             if ($usuario && password_verify($passwd, $usuario['passwd'])) {
                 session_start();
@@ -746,60 +751,64 @@ class Usuario {
             }
             return $check;
         }catch(PDOException $e){
-            error_log("Error autentificacion de usuario ".$_SESSION['user_log']. "\n",3,'log/error.log');
+            error_log("Error autentificacion de usuario ".$email. "\n",3,'log/error.log');
             return $check;
         }
     }
 
     // Función para obtener un objeto Usuario por un valor
-public static function get_object_user_by_value($con, $row, $value) {
+    public static function get_object_user_by_value($con, $row, $value) {
 
-    // Preparar la consulta SQL
-    $sql = "SELECT * FROM usuarios WHERE $row = :valor";
-
-    // Preparar la declaración
-    $statement = $con->prepare($sql);
-
-    // Vincular el valor del ID al marcador de posición en la consulta SQL
-    if(gettype($value) === 'string'){
-        $statement->bindValue(':valor', $value, PDO::PARAM_STR); 
-    }else{
-        $statement->bindValue(':valor', $value, PDO::PARAM_INT);
+        // Preparar la consulta SQL
+        $sql = "SELECT * FROM usuarios WHERE $row = :valor";
+    
+        // Preparar la declaración
+        $statement = $con->prepare($sql);
+    
+        // Vincular el valor del ID al marcador de posición en la consulta SQL
+        if(gettype($value) === 'string'){
+            $statement->bindValue(':valor', $value, PDO::PARAM_STR); 
+        }else{
+            $statement->bindValue(':valor', $value, PDO::PARAM_INT);
+        }
+        
+        // Ejecutar la consulta
+        $statement->execute();
+    
+        // Obtener los valores del usuario como un array asociativo
+        $user_data = $statement->fetch(PDO::FETCH_ASSOC);
+    
+        // Verificar si se encontró un usuario
+        if ($user_data) {
+            // Construir un objeto Usuario con los valores obtenidos
+            $user = new Usuario(
+                $user_data['id'],
+                $user_data['email'],
+                $user_data['nombre'],
+                $user_data['p_apellido'],
+                $user_data['s_apellido'],
+                $user_data['consultas'],
+                $user_data['passwd'],
+                $user_data['dni'],
+                $user_data['telefono'],
+                $user_data['direccion'],
+                $user_data['provincia'],
+                $user_data['localidad'],
+                $user_data['cod_postal'],
+                $user_data['perfil'],
+                $user_data['img'],
+                $user_data['puntos'],
+                $user_data['baja']
+            );
+    
+            // Devolver el usuario
+            return $user;
+        } else {
+            // Si no se encuentra ningún usuario, devolver false
+            return false;
+        }
     }
     
-    // Ejecutar la consulta
-    $statement->execute();
-
-    // Obtener los valores del usuario como un array asociativo
-    $user_data = $statement->fetch(PDO::FETCH_ASSOC);
-
-    // Construir un objeto Usuario con los valores obtenidos
-    $user = new Usuario(
-        $user_data['id'],
-        $user_data['email'],
-        $user_data['nombre'],
-        $user_data['p_apellido'],
-        $user_data['s_apellido'],
-        $user_data['consultas'],
-        $user_data['passwd'],
-        $user_data['dni'],
-        $user_data['telefono'],
-        $user_data['direccion'],
-        $user_data['provincia'],
-        $user_data['localidad'],
-        $user_data['cod_postal'],
-        $user_data['perfil'],
-        $user_data['img'],
-        $user_data['puntos'],
-        $user_data['baja']
-    );
-
-    // Devolver el usuario
-    return $user;
-}
-
-
-
 
 
     public static function boolean_check_email($cadena) {
@@ -837,7 +846,7 @@ public static function get_object_user_by_value($con, $row, $value) {
         return $this->id;
     }
 
-    public function setPasswd(?string $nombre) {
+    public function setPasswd(?string $passwd) {
         $this->passwd = $passwd;
     }
     public function getPasswd(): ?string {

@@ -18,32 +18,76 @@ let btn_cancel_delete_knowledge = document.getElementById('cancel_del_knowledge'
 let window_answer_delete_knowledge = document.getElementById('answer_if_delete_knowledge')
 let bnt_activate_window_question_delete_knowledge = document.getElementById('bnt_question_embedings')
 let longitud_chromaDB = document.getElementById('longitud_BBDD')
+let mini_spinner = document.getElementById('mini_spinner')
 
-//borrado de conocimiento
+//botones agregar nuevo de conocimiento
 let btn_cancel_new_knowledge = document.getElementById('cancel_new_knowledge')
 let window_upload_new_knowledge = document.getElementById('upload_knowledge_form')
+let btn_confirm_upload_new_knowledge = document.getElementById('confirm_upload_new_knowledge')
 
 //Declaramos todos los servicios disabled
-prompt_actual.disabled = true;
-newPrompt.disabled = true;
-btn_send_new_prompt.disabled = true;
-div_chatbot.style.display = 'none';
-aviso.style.display = 'flex';
-window_answer_delete_knowledge.style.display = 'none';
-window_upload_new_knowledge.style.display = 'none';
-btn_new_embeddings.disabled = true;
-btn_delete_json_history.disabled = true;
-btn_download_embeddings.disabled= true;
-bnt_activate_window_question_delete_knowledge.disabled = true;
-btn_download_history.disabled = true;
-btnPrompt.disabled = true;
+if(prompt_actual){
+   prompt_actual.disabled = true; 
+}
+
+
+if(newPrompt){
+   newPrompt.disabled = true; 
+}
+if(btn_send_new_prompt){
+   btn_send_new_prompt.disabled = true; 
+}
+
+if(aviso){
+   aviso.style.display = 'flex'; 
+}
+if(div_chatbot){
+    div_chatbot.style.display = 'none';
+}
+
+if(window_answer_delete_knowledge){
+   window_answer_delete_knowledge.style.display = 'none'; 
+}
+
+if(window_upload_new_knowledge){
+   window_upload_new_knowledge.style.display = 'none'; 
+}
+if(btn_new_embeddings){
+   btn_new_embeddings.disabled = true; 
+}
+if(btn_delete_json_history){
+  btn_delete_json_history.disabled = true;  
+}
+if(btn_download_embeddings){
+   btn_download_embeddings.disabled= true; 
+}
+if(bnt_activate_window_question_delete_knowledge){
+    bnt_activate_window_question_delete_knowledge.addEventListener('click', view_window_delete_knowledge)
+    bnt_activate_window_question_delete_knowledge.disabled = true;  
+}
+if(btn_download_history){
+   btn_download_history.disabled = true; 
+}
+if(btnPrompt){
+ btnPrompt.disabled = true;   
+}
+if(mini_spinner){
+   mini_spinner.style.display = 'none'; 
+}
+
 
 get_status();
-getLongChromaDb();
+
+if(longitud_chromaDB){
+  getLongChromaDb();  
+}
+
 
 //Control del boton eliminar conocimiento
-bnt_activate_window_question_delete_knowledge.addEventListener('click', view_window_delete_knowledge)
-btn_cancel_delete_knowledge.addEventListener('click', view_window_delete_knowledge)
+if(btn_cancel_delete_knowledge){
+    btn_cancel_delete_knowledge.addEventListener('click', view_window_delete_knowledge)
+
+}
 //Funcion que muestra o oculta la ventana de decision de eliminar knowledge
 function view_window_delete_knowledge(){
     estado = window_answer_delete_knowledge.style.display
@@ -59,8 +103,13 @@ function view_window_delete_knowledge(){
 }
 
 //Control del boton aportar nuevo conocimiento
-btn_new_embeddings.addEventListener('click', view_window_new_knowledge)
-btn_cancel_new_knowledge.addEventListener('click', view_window_new_knowledge)
+if(btn_new_embeddings){
+    btn_new_embeddings.addEventListener('click', view_window_new_knowledge)
+}
+if(btn_cancel_new_knowledge){
+    btn_cancel_new_knowledge.addEventListener('click', view_window_new_knowledge)
+
+}
 //Funcion que muestra o oculta la ventana de decision de eliminar knowledge
 function view_window_new_knowledge(){
     estado = window_upload_new_knowledge.style.display
@@ -76,13 +125,16 @@ function view_window_new_knowledge(){
 }
 
 
-btn_confirm_delete_knowledge.addEventListener('click', delete_knowledge)
+if(btn_confirm_delete_knowledge){
+    btn_confirm_delete_knowledge.addEventListener('click', delete_knowledge)
+
+}
 
 //DELETE KNOWLEDGE
 
 function delete_knowledge(){
     view_window_delete_knowledge()
-    fetch('http://localhost:8080/delete_knowledge')
+    fetch('https://stetia-bot-a8c9ef1a3bf7.herokuapp.com/delete_knowledge')
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -100,7 +152,60 @@ function delete_knowledge(){
     .catch(error => {
         console.error('Error:', error);
         alert('Error: Error al eliminar los datos');
-});
+    });
+}
+
+
+//ADD NEW KNOWLEDGE
+
+if(btn_confirm_upload_new_knowledge){
+    btn_confirm_upload_new_knowledge.addEventListener('click', add_new_knowledge);
+
+}
+
+function add_new_knowledge(){
+    btn_confirm_upload_new_knowledge.style.display = 'none';
+    mini_spinner.style.display = 'block';
+    var fileInput = document.getElementById('fileInput');
+    var file = fileInput.files[0];
+
+    if (file) {
+        if (file.type === "text/plain") {
+            let reader = new FileReader();
+            reader.onload = function(event) {
+                var fileContent = event.target.result;
+                // Send the file content to the server
+                fetch('https://stetia-bot-a8c9ef1a3bf7.herokuapp.com/add_new_knowledge', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ fileContent: fileContent })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    mini_spinner.style.display = 'none';
+                    btn_confirm_upload_new_knowledge.style.display = 'flex';
+                    view_window_new_knowledge();
+                    alert('Success:' + data.message);
+                    location.reload();
+                })
+                .catch((error) => {
+                    mini_spinner.style.display = 'none';
+                    btn_confirm_upload_new_knowledge.style.display = 'flex';
+                    console.error('Error:', error);
+                });
+            };
+            reader.readAsText(file);
+        } else {
+            mini_spinner.style.display = 'none';
+            alert("Please upload a valid text file.");
+        }
+    } else {
+        mini_spinner.style.display = 'none';
+        btn_confirm_upload_new_knowledge.style.display = 'flex';
+        alert("No file selected.");
+    }
 }
 
 
@@ -109,50 +214,114 @@ function delete_knowledge(){
 async function get_status() {
     try {
         // Realizar la solicitud al servidor para conocer su estado
-        const response = await fetch('http://localhost:8080/check_status');
+        const response = await fetch('https://stetia-bot-a8c9ef1a3bf7.herokuapp.com/check_status');
         
         if (!response.ok) {
              // Devuelve false si la respuesta no es exitosa
-            btnPrompt.disabled = true;
-            btn_download_history.disabled = true;
-            bnt_activate_window_question_delete_knowledge.disabled = true;
-            aviso.style.display = 'flex';
-            prompt_actual.disabled = true;
-            newPrompt.disabled = true;
-            btn_send_new_prompt.disabled = true;
-            div_chatbot.style.display = 'none';
-            btn_new_embeddings.disabled = true;
-            btn_delete_json_history.disabled = true
-            btn_download_embeddings.disabled= true;
+             if(btn_new_embeddings){
+                btn_new_embeddings.disabled = true; 
+             }
+             if(bnt_activate_window_question_delete_knowledge){
+                 bnt_activate_window_question_delete_knowledge.disabled = true;
+             }
+             if(aviso){
+                 aviso.style.display = 'flex';   
+             }
+             if(prompt_actual){
+               prompt_actual.disabled = true;  
+             }
+             if(newPrompt){
+                newPrompt.disabled = true; 
+             }if(btn_send_new_prompt){
+                btn_send_new_prompt.disabled = true; 
+             }
+             if(div_chatbot){
+                div_chatbot.style.display = 'none'; 
+             }
+             if(btn_delete_json_history){
+                btn_delete_json_history.disabled = true 
+             }
+             if(btn_download_embeddings){
+                 btn_download_embeddings.disabled= true;
+             }
+             if(btn_download_history){
+                btn_download_history.disabled = true; 
+             }
+             if(btnPrompt){
+                 btnPrompt.disabled = true;
+             }
         }
         
         // Si la solicitud fue exitosa, devolvemos true
-        btnPrompt.disabled = false;
-        bnt_activate_window_question_delete_knowledge.disabled = false;
-        btn_download_embeddings.disabled= false;
-        aviso.style.display = 'none';
-        prompt_actual.disabled = false;
-        newPrompt.disabled = false;
-        btn_send_new_prompt.disabled = false;
-        div_chatbot.style.display = 'flex';
-        btn_new_embeddings.disabled = false;
-        btn_delete_json_history.disabled = false;
-        btn_download_history.disabled = false;
+        if(btn_new_embeddings){
+            btn_new_embeddings.disabled = false; 
+         }
+         if(bnt_activate_window_question_delete_knowledge){
+             bnt_activate_window_question_delete_knowledge.disabled = false;
+         }
+         if(aviso){
+             aviso.style.display = 'none';   
+         }
+         if(prompt_actual){
+           prompt_actual.disabled = false;  
+         }
+         if(newPrompt){
+            newPrompt.disabled = false; 
+
+         }if(btn_send_new_prompt){
+            btn_send_new_prompt.disabled = false; 
+         }
+         if(div_chatbot){
+            div_chatbot.style.display = 'flex'; 
+         }
+         if(btn_delete_json_history){
+            btn_delete_json_history.disabled = false 
+         }
+         if(btn_download_embeddings){
+             btn_download_embeddings.disabled= false;
+         }
+         if(btn_download_history){
+            btn_download_history.disabled = false; 
+         }
+         if(btnPrompt){
+             btnPrompt.disabled = false;
+         }
 
     } catch (error) {
         // Si ocurre un error, registramos el error en la consola y devolvemos false
-        bnt_activate_window_question_delete_knowledge.disabled = true;
-        btn_new_embeddings.disabled = true;
+        if(btn_new_embeddings){
+           btn_new_embeddings.disabled = true; 
+        }
+        if(bnt_activate_window_question_delete_knowledge){
+            bnt_activate_window_question_delete_knowledge.disabled = true;
+        }
+        if(aviso){
+            aviso.style.display = 'flex';   
+        }
+        if(prompt_actual){
+          prompt_actual.disabled = true;  
+        }
+        if(newPrompt){
+           newPrompt.disabled = true; 
+        }if(btn_send_new_prompt){
+           btn_send_new_prompt.disabled = true; 
+        }
+        if(div_chatbot){
+           div_chatbot.style.display = 'none'; 
+        }
+        if(btn_delete_json_history){
+           btn_delete_json_history.disabled = true 
+        }
+        if(btn_download_embeddings){
+            btn_download_embeddings.disabled= true;
+        }
+        if(btn_download_history){
+           btn_download_history.disabled = true; 
+        }
+        if(btnPrompt){
+            btnPrompt.disabled = true;
+        }
         console.error('Error:', error);
-        aviso.style.display = 'flex';
-        prompt_actual.disabled = true;
-        newPrompt.disabled = true;
-        btn_send_new_prompt.disabled = true;
-        div_chatbot.style.display = 'none';
-        btn_delete_json_history.disabled = true
-        btn_download_embeddings.disabled= true;
-        btn_download_history.disabled = true;
-        btnPrompt.disabled = true;
     }
 }
 
@@ -210,7 +379,7 @@ function checkURL() {
         // Si la URL actual contiene 'url_especifica', activar la función específica
         let p_conversaciones = document.getElementById('conversaciones');
         // Realizar la solicitud fetch después de actualizar la URL
-        fetch('http://localhost:8080/getStatus')
+        fetch('https://stetia-bot-a8c9ef1a3bf7.herokuapp.com/getStatus')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -233,11 +402,13 @@ function checkURL() {
 
 checkURL()
 
-btn_delete_json_history.addEventListener('click', delete_json_historial)
+if(btn_delete_json_history){
+    btn_delete_json_history.addEventListener('click', delete_json_historial)
+}
 
 //DELETE HISTORIAL
 function delete_json_historial(){
-    fetch('http://localhost:8080/delete_history')
+    fetch('https://stetia-bot-a8c9ef1a3bf7.herokuapp.com/delete_history')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -293,7 +464,7 @@ function getPrompt(){
         };
 
         // Solicitamos una peticion para que nos arroje la informacion
-        fetch('http://localhost:8080/getPrompt', requestOptions)
+        fetch('https://stetia-bot-a8c9ef1a3bf7.herokuapp.com/getPrompt', requestOptions)
         .then(response => response.json()) 
         .then(data => {
             prompt_actual.value = data.response;
@@ -307,7 +478,7 @@ function getPrompt(){
 
 function getLongChromaDb(){
     // Solicitamos una peticion para que nos arroje la informacion
-    fetch('http://localhost:8080/getLongBBDDChroma')
+    fetch('https://stetia-bot-a8c9ef1a3bf7.herokuapp.com/getLongBBDDChroma')
     .then(response => response.json()) 
     .then(data => {
         longitud_chromaDB.textContent = data['longitud'];
@@ -343,7 +514,7 @@ function set_new_embeddings(){
         };
 
         // Solicitamos una peticion para que nos arroje la informacion
-        fetch('http://localhost:8080/getPrompt', requestOptions)
+        fetch('https://stetia-bot-a8c9ef1a3bf7.herokuapp.com/getPrompt', requestOptions)
         .then(response => response.json()) 
         .then(data => {
             prompt_actual.value = data.response;
@@ -353,13 +524,17 @@ function set_new_embeddings(){
         });
 }
 
-btn_download_embeddings.addEventListener('click', download_embeddings)
+
+if(btn_download_embeddings){
+    btn_download_embeddings.addEventListener('click', download_embeddings)
+
+}
 
 //DOWNLOAD EMBEDDINGS
 
 function download_embeddings() {
     // Realizar la solicitud para obtener los embeddings
-    fetch('http://localhost:8080/getEmbeddings')
+    fetch('https://stetia-bot-a8c9ef1a3bf7.herokuapp.com/getEmbeddings')
     .then(response => {
         if (!response.ok) {
             throw new Error('No se pudo obtener los embeddings');
@@ -427,7 +602,7 @@ function setNewPrompt(){
 
 
     // 'http://127.0.0.1:5000/predict
-    fetch('http://localhost:8080/prompt', requestOptions)
+    fetch('https://stetia-bot-a8c9ef1a3bf7.herokuapp.com/prompt', requestOptions)
     .then(response => response.json()) 
     .then(data => {
         window.location.href = 'home.php?type=_status_chatbot';
@@ -453,7 +628,7 @@ function getHistorial(){
         };
 
         // Solicitamos una peticion para que nos arroje la informacion
-        fetch('http://localhost:8080/getHistory', requestOptions)
+        fetch('https://stetia-bot-a8c9ef1a3bf7.herokuapp.com/getHistory', requestOptions)
         .then(response => response.text()) // Convertir la respuesta a texto
         .then(data => {
         // Crear un objeto Blob con los datos recibidos
@@ -569,7 +744,7 @@ class ChatBox{
         
 
         // 'http://127.0.0.1:5000/predict
-        fetch('http://localhost:8080/predict', requestOptions)
+        fetch('https://stetia-bot-a8c9ef1a3bf7.herokuapp.com/predict', requestOptions)
         .then(response => response.json()) 
         .then(data => {
             let msg2 = { name: "bot", message: data.response };

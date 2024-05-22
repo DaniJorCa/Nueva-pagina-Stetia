@@ -1,5 +1,5 @@
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-light col-1 col-lg-3 order-lg-start" id="aside-bar" style="width: 280px;">
-    <a href="/es/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+    <a href="home.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
         <use xlink:href="#bootstrap"></use>
         </svg> <span class="fs-4 text-center">Hola  <?php if($_SESSION['user_log']->getNombre() != ''){ echo $_SESSION['user_log']->getNombre(); }else{ echo("**Pendiente**");} ?></span> 
     </a>
@@ -65,13 +65,15 @@
         </ul>
     <hr>
     <div class="dropdown">
-        <a href="/es/docs/5.2/examples/sidebars/#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> <img src="<?php if($_SESSION['user_log']->getImg() !== null){echo $_SESSION['user_log']->getImg();} else{ echo "img/background/home_user.png";}?> " alt="" class="rounded-circle me-2" width="32" height="32"> <strong>Mas opciones</strong> </a>
-        <ul class="dropdown-menu text-small shadow">
-            <li><a class="dropdown-item" href="/es/docs/5.2/examples/sidebars/#">Ajustes</a></li>
-            <li><a class="dropdown-item" href="/es/docs/5.2/examples/sidebars/#">Perfil</a></li>
-            <li>
-            <hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="exit.php">desconectar</a></li>
-        </ul>
+      <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="<?php echo $_SESSION['user_log']->getImg() !== null ? $_SESSION['user_log']->getImg() : 'img/background/home_user.png'; ?>" alt="" width="32" height="32" class="rounded-circle me-2">
+        <strong>mdo</strong>
+      </a>
+      <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="exit.php">desconectar</a></li>
+      </ul>
     </div>
+
 </div>

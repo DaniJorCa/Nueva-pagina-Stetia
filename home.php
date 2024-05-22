@@ -150,7 +150,6 @@ include ('php/views/chat_bot.html');
 ?>
         <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
         <script src="assets/vendor/aos/aos.js"></script>
-        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
         <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
         <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
@@ -158,7 +157,7 @@ include ('php/views/chat_bot.html');
 
         <!-- cookies JS File -->
         <script type="text/javascript" src="js/generic.js"></script>
-        <!-- chatBot JS File -->
+        <!--chatBot JS File -->
         <script type="text/javascript" src="js/chatBot.js"></script>
 
         <script src="js/transition.js"></script>

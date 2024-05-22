@@ -57,7 +57,7 @@ require_once  ('php/controllers/form_controller.php');
 ?>
     <body class="row d-flex justify-content-center">
 
-    <main class=" my-3">
+    <main>
 <?php
     include('php/views/call_to_action.html');
     include ('php/views/numeros_stetia.html');
@@ -85,7 +85,6 @@ require_once  ('php/controllers/form_controller.php');
          <!-- Vendor JS Files -->
         <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
         <script src="assets/vendor/aos/aos.js"></script>
-        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
         <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
         <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>

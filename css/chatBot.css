@@ -3,14 +3,15 @@
     --main-blue: #73d2de;
     --main-violet: #792359;
     --main-rose_gold: #ffa88b;
+    --sof-main-violet:  #d150a2;
   }
   
 
 *, html {
-    --primaryGradient: linear-gradient(93.12deg, var(--main-violet) 0.52%, var(--main-violet) 100%);
-    --secondaryGradient: linear-gradient(268.91deg, var(--main-violet) -2.14%, var(--main-violet) 99.69%);
-    --primaryBoxShadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
-    --secondaryBoxShadow: 0px -10px 15px rgba(0, 0, 0, 0.1);
+    --primaryGradient: linear-gradient(93.12deg, var(--main-violet) 0.52%, var(--sof-main-violet) 100%);
+    --secondaryGradient: linear-gradient(268.91deg, var(--sof-main-violet) -2.14%, var(--main-violet) 99.69%);
+    --primaryBoxShadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+    --secondaryBoxShadow: 0px -10px 15px rgba(0, 0, 0, 0.2);
     --primary: var(--main-violet);
 }
 
@@ -23,6 +24,7 @@
     visibility: hidden;
 }
 
+
 /* CONTENT IS CLOSE */
 .chatbox__support {
     position: relative;
@@ -31,7 +33,7 @@
     background: var(--main-pink);
     width: 300px;
     height: 350px;
-    z-index: -123456;
+    z-index: -1;
     opacity: 0;
     transition: all .5s ease-in-out;
 }
@@ -39,7 +41,7 @@
 /* CONTENT ISOPEN */
 .chatbox--active {
     transform: translateY(-40px);
-    z-index: 123456;
+    z-index: 3;
     opacity: 1;
     visibility: visible;
 }
@@ -50,6 +52,7 @@
     bottom: 50px;
     right: 50px;
     text-align: right;
+    z-index: 3;
 }
 
 .send__button {
@@ -65,7 +68,6 @@
 .chatbox__header {
     position: sticky;
     top: 0;
-    background: orange;
 }
 
 /* MESSAGES */
@@ -103,6 +105,8 @@
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 /* HEADER */
@@ -188,6 +192,7 @@
 .chatbox__button,
 .chatbox__button,
 .chatbox__button  {
+    z-index: 3;
     padding: 10px;
     background: var(--main-pink);
     border: none;

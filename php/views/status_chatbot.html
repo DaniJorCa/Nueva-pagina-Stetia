@@ -22,7 +22,8 @@
     <h3 class="text-center">Status Chatbot</h3>
 
     <div class="row d-flex justify-content-center flex-row my-3">
-        <div class="card col-12 col-lg-3 mx-3 d-flex card-status my-2 justify-content-center">
+
+        <div class="card col-12 col-xl-3 mx-3 d-flex card-status my-2 justify-content-evenly">
             <div class="col-12 ms-1 mt-3 p-0 count-box">
                 <i class="bi bi-floppy icono col-4" style="color: #831959;"></i>
                 <p class="text-center text-card-status"><strong>Historial conversaciones</strong></p>
@@ -35,7 +36,7 @@
             </div>
         </div>
 
-        <div class="card col-12 col-lg-3 mx-3 d-flex card-status my-2 justify-content-evenly">
+        <div class="card col-12 col-xl-3 mx-3 d-flex card-status my-2 justify-content-evenly">
             <div class="ms-1 mt-3 p-0 count-box">
                 <i class="bi bi-translate icono me-2 col-12" style="color: #831959; font-size: 2rem;"></i>
                 <p class="text-center text-card-status m-0"><strong>Prompt Chatbot</strong></p>
@@ -44,7 +45,7 @@
             <button class="w-70 btn btn-md btn-cta mx-1 mb-2" id="btn-prompt"><i class="bi bi-chat-right-text mx-2"></i>Modificar prompt</button>
         </div>
 
-        <div class="card col-12 col-lg-3 mx-3 d-flex card-status my-2 justify-content-evenly">
+        <div class="card col-12 col-xl-3 mx-3 d-flex card-status my-2 justify-content-evenly">
             <div class="ms-1 mt-3 p-0 count-box">
                 <i class="fa-solid fa-brain icono me-2 col-12" style="color: #831959; font-size: 2rem;"></i>
                 <p class="text-center text-card-status m-0"><strong>Conocimiento del Chatbot</strong></p>
@@ -97,15 +98,20 @@
 
 <div class="row col-12 justify-content-center my-3" id="upload_knowledge_form">
     <div class="row col-8 border d-flex flex-column">
-    <p class="fs-3 text-center col-12 font-weight-bold"><i class="fa-solid fa-graduation-cap mx-3"></i>Subir nuevo conocimiento</p>
+    <p class="fs-3 text-center col-12 font-weight-bold my-3"><i class="fa-solid fa-graduation-cap mx-3"></i>Subir nuevo conocimiento</p>
     <form method="post" class="justify-content-center" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="fileInput" class="form-label">Selecciona un archivo de texto:</label>
           <input class="form-control" type="file" id="fileInput" name="fileInput">
         </div>
-        <button type="submit" class="btn btn-primary">Subir archivo</button>
-        <button type="button" class="btn  col-3 align-middle mx-1 my-3 btn-danger" id="cancel_new_knowledge">Cancelar</button>
+        <div class="row col-12 justify-content-center align-middle">
+            <button type="button" class="btn  col-5 align-middle mx-1 my-3 btn-success" id="confirm_upload_new_knowledge">Subir archivo</button>
+            <button class="btn  col-5 align-middle mx-1 my-3 btn-success" type="button" id="mini_spinner" >
+                <span class="spinner-border spinner-border-sm mx-4" role="status" aria-hidden="true"></span>Loading...
 
+            </button>
+            <button type="button" class="btn  col-5 align-middle mx-1 my-3 btn-danger" id="cancel_new_knowledge">Cancelar</button> 
+        </div>
       </form>
     </div>
 </div>
