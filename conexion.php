@@ -14,19 +14,19 @@
 include('php/models/clases.php');
 
 include('spinner.html');
-
+var_dump($_POST['passwd']);
 
 $check_log = Usuario::checkLog($_POST['email'], $_POST['passwd']); 
 
 if($check_log){
     session_start();
     $_SESSION['check_log'] = $check_log;
-    //header('Location: home.php'); 
-    //exit();
+    header('Location: home.php'); 
+    exit();
 }else{
     error_log("Error conexion.php checklog erroneo\n",3,'log/error.log');
-    //header('Location: index.php');
-    //exit();   
+    header('Location: index.php');
+    exit();   
 }
 ?>
 <script>

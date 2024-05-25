@@ -16,7 +16,7 @@
 <?php
     require_once ('php/controllers/tratamientos_controller.php');
     require_once  ('php/controllers/form_controller.php');
-    require_once  ('php/views/header.html');
+    require_once  ('php/views/header.php');
 ?>    
     <main class="p-4  my-3">
 

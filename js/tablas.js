@@ -396,10 +396,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if(boton_confirm_delete && boton_life_user){
     
-    boton_delete_user.addEventListener('click', function(){
+    if(boton_delete_user){
+       boton_delete_user.addEventListener('click', function(){
         card_usuario.style.display = 'none';
         div_eliminar_usuario.style.display = 'flex'; 
-    });
+        }); 
+    }
+    
 
     boton_life_user.addEventListener('click', function(){
         card_usuario.style.display = 'flex';

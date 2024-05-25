@@ -52,7 +52,8 @@ function check_register_form_fields(){
     //Creamos el id y establecemos un nuevo usuario
     $max_id = get_max_value_of_field('usuarios', 'id');
     $last_id = $max_id['max_field'] + 1;
-    $new_user = new Usuario($last_id, $email, $nombre, $p_apellido, $s_apellido, null, $passwd, null, $telefono, null, null, null, null, 0, null);
+    $hash = password_hash($passwd, PASSWORD_DEFAULT);
+    $new_user = new Usuario($last_id, $email, $nombre, $p_apellido, $s_apellido, null, $hash, null, $telefono, null, null, null, null, 0, null);
 
     if(!isset($con)){
         $con = Conexion::conectar_db();
@@ -110,6 +111,7 @@ function modificar_usuario_registrado(){
     $img = filter_input(INPUT_POST, 'imagen', FILTER_SANITIZE_STRING);
     
     $valores_a_modificar = (wich_fields_want_update($_POST));
+    error_log("Error email exist && passwd.". $_SESSION['user_log']->getPasswd() ." \n",3,'log/error.log');
     $user_mod = new Usuario($_SESSION['user_log']->getId(), $_SESSION['user_log']->getEmail(), $_SESSION['user_log']->getNombre(), $_SESSION['user_log']->getP_apellido(), 
                         $_SESSION['user_log']->getS_apellido(), $_SESSION['user_log']->getConsultas(), $_SESSION['user_log']->getPasswd(),  $_SESSION['user_log']->getDni(), 
                         $_SESSION['user_log']->getTelefono(), $_SESSION['user_log']->getDireccion(), $_SESSION['user_log']->getProvincia(), $_SESSION['user_log']->getLocalidad(), 

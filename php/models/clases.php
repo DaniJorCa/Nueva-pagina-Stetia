@@ -451,7 +451,6 @@ function insert_object_in_BBDD($con, $tabla, $objeto) {
         // Ejecutar la consulta
         $statement->execute();
 
-        // Devolver el ID del último registro insertado
         return true;
     } catch (PDOException $e) {
         error_log("Error al crear el objeto \n". $e,3,'log/error.log');
@@ -645,7 +644,7 @@ class Usuario {
         $this->p_apellido = $p_apellido;
         $this->s_apellido = $s_apellido;
         $this->consultas = $consultas;
-        $this->passwd = password_hash($passwd, PASSWORD_DEFAULT);
+        $this->passwd = $passwd;
         $this->dni = $dni;
         $this->telefono = $telefono;
         $this->direccion = $direccion;
@@ -656,7 +655,12 @@ class Usuario {
         $this->img = $img;
         $this->puntos = $puntos;
         $this->baja = $baja;
-        $this->fecha_alta = $fecha_alta;
+        if ($fecha_alta instanceof DateTime) {
+            $this->fecha_alta = $fecha_alta;
+        } else {
+            // Intenta crear un objeto DateTime a partir de la cadena de fecha proporcionada
+            $this->fecha_alta = new DateTime($fecha_alta);
+        }
     }
 
 
@@ -743,6 +747,7 @@ class Usuario {
                     $usuario['img'],
                     $usuario['puntos'],
                     $usuario['baja'],
+                    $usuario['fecha_alta']
                 );
 
                 $check = true;
@@ -798,7 +803,8 @@ class Usuario {
                 $user_data['perfil'],
                 $user_data['img'],
                 $user_data['puntos'],
-                $user_data['baja']
+                $user_data['baja'],
+                $user_data['fecha_alta']
             );
     
             // Devolver el usuario
@@ -1308,4 +1314,134 @@ class Articulo {
     }
 }
 
+class Mensaje {
+    protected ?int $id;
+    protected int $id_user;
+    protected string $mensaje;
+    protected ?string $leido;
+    protected ?string $baja;
+
+    public function __construct(int $id_user, string $mensaje,  int $leido = 0, int $baja = 0, int $id = null) {
+        $this->id = $id;
+        $this->id_user = $id_user;
+        $this->mensaje = $mensaje;
+        $this->leido = $leido;
+        $this->baja = $baja;
+    }
+
+
+
+    //SETTERS Y GETTERS
+
+    public function setId(?int $id) {
+        $this->id = $id;
+    }
+    public function getId(): ?int {
+        return $this->id;
+    }
+
+    public function setIdUser(int $id_user) {
+        $this->id_user = $id_user;
+    }
+    public function getIdUser(): int {
+        return $this->id_user;
+    }
+
+    public function setMensaje(string $mensaje) {
+        $this->mensaje = $mensaje;
+    }
+    public function getMensaje(): string {
+        return $this->mensaje;
+    }
+
+    public function setLeido(?int $leido) {
+        $this->leido = $leido;
+    }
+    public function getLeido(): ?int {
+        return $this->leido;
+    }
+
+    public function setBaja(?int $baja) {
+        $this->baja = $baja;
+    }
+    public function getBaja(): ?int {
+        return $this->baja;
+    }
+
+ 
+
+    public function toArray(): array {
+        $valores = [];
+        foreach (get_object_vars($this) as $atributo => $valor) {
+            // Si el valor es numérico, mantén su tipo de dato
+            if (is_numeric($valor)) {
+                $valores[$atributo] = $valor + 0; // Forzar a float
+            } else {
+                $valores[$atributo] = $valor;
+            }
+        }
+        return $valores;
+    }
+
+    public static function get_object_good_by_value($con, $row, $value) {
+
+        // Preparar la consulta SQL
+        $sql = "SELECT * FROM mensajes WHERE $row = :valor";
+    
+        // Preparar la declaración
+        $statement = $con->prepare($sql);
+    
+        // Vincular el valor del ID al marcador de posición en la consulta SQL
+        if(gettype($value) === 'string'){
+            $statement->bindValue(':valor', $value, PDO::PARAM_STR); 
+        }else{
+            $statement->bindValue(':valor', $value, PDO::PARAM_INT);
+        }
+        
+    
+        // Ejecutar la consulta
+        $statement->execute();
+    
+        // Obtener los valores del usuario como un array asociativo
+        $mensaje_data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Construir un objeto Usuario con los valores obtenidos
+        $mensaje = new Mensaje(
+            $mensaje_data['id_user'],
+            $mensaje_data['mensaje'],
+            $mensaje_data['leido'],
+            $mensaje_data['baja'],
+            $mensaje_data['id']
+        );
+    
+        // Devolver el usuario
+        return $mensaje;
+    }
+
+    public static function get_all_messages() {
+        try{
+            $con = Conexion::conectar_db();
+            $sql = $con->prepare("SELECT * FROM mensajes");
+
+            $sql->execute();
+            $resultados =  $sql->fetchAll(PDO::FETCH_ASSOC); 
+            $mensajes = [];
+
+            foreach ($resultados as $fila) {
+                $mensaje = new Mensaje(
+                    $fila['id_user'],
+                    $fila['mensaje'],
+                    $fila['leido'],
+                    $fila['baja'],
+                    $fila['id']
+                );
+                $mensajes[] = $mensaje; 
+            }
+
+            return $mensajes;
+        }catch (PDOException $e){
+                die('Error de conexión: ' . $e->getMessage());  
+        }
+    }
+}
 ?>

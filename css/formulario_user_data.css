@@ -14,7 +14,6 @@ font-family: "Lato", sans-serif;
 }
 .contact-us {
 position: relative;
-width: 250px;
 background: var(--main-pink);
 overflow: hidden;
 }
@@ -47,7 +46,8 @@ left: -40px;
     height: 160px;
     rotate: -90deg;
     position: relative;
-    top: 70px;
+    top: 30px;
+    right: -70px;
 }
 .contact-header h1 {
 font-size: 1.5rem;
@@ -55,23 +55,9 @@ font-size: 1.5rem;
 .social-bar {
 position: absolute;
 bottom: 20px;
-left: 75px;
-z-index: 1;
 width: 100px;
 }
-.social-bar ul {
-list-style-type: none;
-}
-.social-bar ul li {
-display: inline-block;
-color: white;
-width: 25px;
-height: 25px;
-line-height: 25px;
-text-align: center;
-margin-right: -4px;
-font-size: 1.2rem;
-}
+
 .header {
 text-align: center;
 padding: 20px 0;
@@ -176,3 +162,33 @@ grid-area: email;
 grid-area: contact-form;
 }
 
+.upload_img{
+  min-height: 120px;
+  min-width: 150px;
+}
+
+.fa-upload:hover{
+  background-color: var(--main-blue);
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+@media (max-width: 991px) {
+  .pers-corner{
+    display: none;
+  }
+  .social-bar {
+    left: 40px;
+    bottom: -10px;
+    }
+}
+
+@media (min-width: 991px) {
+  .upload_img{
+    transform: translateX(-20px);
+  }
+}
+
+.abajo{
+  z-index: 0;
+}

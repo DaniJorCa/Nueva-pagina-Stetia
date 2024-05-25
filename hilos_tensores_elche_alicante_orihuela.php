@@ -19,7 +19,7 @@
     <body class="row d-flex justify-content-center">
 <?php
     include ('php/controllers/tratamientos_controller.php');
-    include ('php/views/header.html');
+    include ('php/views/header.php');
     include ('php/views/slider.html');
 ?>    
     <main class="p-4 col-8 my-3">

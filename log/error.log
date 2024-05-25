@@ -1,62 +1,78 @@
-Entrando en la funcion update_articulos. 
-Entrando en la funcion update_articulos. 1
-Entrando en la funcion update_articulos. 1
-Entrando en la funcion update_articulos. 1
-Entrando en la funcion update_articulos. 1
-Entrando en la funcion update_articulos. 1
-Usuario actual 0.00
-Entrando en la funcion update_articulos. 1
-Usuario actual 45.00
-No existe $ files img. 
-Entrando en la funcion update_articulos. 1
-Usuario actual 45.00
-No existe $ files img. 
-Entrando en la funcion update_articulos. 1
-Usuario actual 50.00
-Entrando en la funcion update_articulos. 1
-Usuario actual 50.00
-Entrando en la funcion update_articulos. 1
-Usuario actual 50.00
-Error al intentar actualizar con la funcion update_object_in_BBDD. 
-Entrando en la funcion update_articulos. 1
-Usuario actual 50.00
-Error al intentar actualizar con la funcion update_object_in_BBDD. 
-Entrando en la funcion update_articulos. 1
-Usuario actual 50.00
-Error al intentar actualizar con la funcion update_object_in_BBDD. 
-Entrando en la funcion update_articulos. 6
-Usuario actual 127.00
-Error al intentar actualizar con la funcion update_object_in_BBDD. 
-Entrando en la funcion update_articulos. 6
-Usuario actual 127.00
-Entrando en la funcion update_articulos. 1
-Usuario actual 45.00
-Entrando en la funcion update_articulos. 1
-Entrando en la funcion update_articulos. 5
-Usuario actual 123.00
-No existe $ files img. 
 Error conexion.php checklog erroneo
-Error autentificacion de usuario 
-Error autentificacion de usuario 
 Error conexion.php checklog erroneo
-Error autentificacion de usuario 
 Error conexion.php checklog erroneo
-Error autentificacion de usuario 
-Error autentificacion de usuario 
 Error conexion.php checklog erroneo
-Error autentificacion de usuario 
-Error autentificacion de usuario 
-Error autentificacion de usuario 
-Error autentificacion de usuario 
-Error autentificacion de usuario 
-Error autentificacion de usuario madagajor@gmail.com
-Error autentificacion de usuario madagajor@gmail.com
-Error autentificacion de usuario madagajor@gmail.com
-Error autentificacion de usuario madagajor@gmail.com
-Error autentificacion de usuario madagajor@gmail.com
-Error autentificacion de usuario madagajor@gmail.com
-Error autentificacion de usuario madagajor@gmail.com
-Error autentificacion de usuario madagajor@gmail.com
 Error conexion.php checklog erroneo
+Error conexion.php checklog erroneo
+Error conexion.php checklog erroneo
+Error conexion.php checklog erroneo
+Error conexion.php checklog erroneo
+Error conexion.php checklog erroneo
+Error email exist && passwd.$2y$10$t0fTcUwU1taFNqo1vy8QguLO/5jaPaD57TmFQkccJ38.C1PzKZj3y 
+Error email exist && passwd.$2y$10$t0fTcUwU1taFNqo1vy8QguLO/5jaPaD57TmFQkccJ38.C1PzKZj3y 
+Error email exist && passwd.$2y$10$t0fTcUwU1taFNqo1vy8QguLO/5jaPaD57TmFQkccJ38.C1PzKZj3y 
+Error email exist && passwd.$2y$10$t0fTcUwU1taFNqo1vy8QguLO/5jaPaD57TmFQkccJ38.C1PzKZj3y 
+Error conexion.php checklog erroneo
+Error conexion.php checklog erroneo
+Error email exist && passwd.$2y$10$pZ/on.J28dRSf.To7Rav0.HKcNYMPEhbiV7Li60eyP7gOVBuJW1HC 
+Error conexion.php checklog erroneo
+Error conexion.php checklog erroneo
+Error conexion.php checklog erroneo
+Error conexion.php checklog erroneo
+Error al crear el objeto 
+PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'stetia.mensaje' doesn't exist in C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php:452
+Stack trace:
+#0 C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php(452): PDOStatement->execute()
+#1 C:\xampp\htdocs\Nueva pagina Stetia\php\controllers\superUser_controller.php(329): insert_object_in_BBDD(Object(PDO), 'Mensaje', Object(Mensaje))
+#2 C:\xampp\htdocs\Nueva pagina Stetia\home.php(95): send_message()
+#3 {main}Error al crear el objeto 
+PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'stetia.mensaje' doesn't exist in C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php:452
+Stack trace:
+#0 C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php(452): PDOStatement->execute()
+#1 C:\xampp\htdocs\Nueva pagina Stetia\php\controllers\superUser_controller.php(329): insert_object_in_BBDD(Object(PDO), 'Mensaje', Object(Mensaje))
+#2 C:\xampp\htdocs\Nueva pagina Stetia\home.php(95): send_message()
+#3 {main}Error al crear el objeto 
+PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'stetia.mensaje' doesn't exist in C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php:452
+Stack trace:
+#0 C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php(452): PDOStatement->execute()
+#1 C:\xampp\htdocs\Nueva pagina Stetia\php\controllers\superUser_controller.php(329): insert_object_in_BBDD(Object(PDO), 'Mensaje', Object(Mensaje))
+#2 C:\xampp\htdocs\Nueva pagina Stetia\home.php(95): send_message()
+#3 {main}Error al crear el objeto 
+PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'stetia.mensaje' doesn't exist in C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php:452
+Stack trace:
+#0 C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php(452): PDOStatement->execute()
+#1 C:\xampp\htdocs\Nueva pagina Stetia\php\controllers\superUser_controller.php(330): insert_object_in_BBDD(Object(PDO), 'Mensaje', Object(Mensaje))
+#2 C:\xampp\htdocs\Nueva pagina Stetia\home.php(95): send_message()
+#3 {main}Error al crear el objeto 
+PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'stetia.mensaje' doesn't exist in C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php:452
+Stack trace:
+#0 C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php(452): PDOStatement->execute()
+#1 C:\xampp\htdocs\Nueva pagina Stetia\php\controllers\superUser_controller.php(329): insert_object_in_BBDD(Object(PDO), 'Mensaje', Object(Mensaje))
+#2 C:\xampp\htdocs\Nueva pagina Stetia\home.php(95): send_message()
+#3 {main}Error al crear el objeto 
+PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'stetia.mensaje' doesn't exist in C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php:452
+Stack trace:
+#0 C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php(452): PDOStatement->execute()
+#1 C:\xampp\htdocs\Nueva pagina Stetia\php\controllers\superUser_controller.php(329): insert_object_in_BBDD(Object(PDO), 'Mensaje', Object(Mensaje))
+#2 C:\xampp\htdocs\Nueva pagina Stetia\home.php(16): send_message()
+#3 {main}Error al crear el objeto 
+PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'stetia.mensaje' doesn't exist in C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php:452
+Stack trace:
+#0 C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php(452): PDOStatement->execute()
+#1 C:\xampp\htdocs\Nueva pagina Stetia\php\controllers\superUser_controller.php(329): insert_object_in_BBDD(Object(PDO), 'Mensaje', Object(Mensaje))
+#2 C:\xampp\htdocs\Nueva pagina Stetia\home.php(16): send_message()
+#3 {main}Error al crear el objeto 
+PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'stetia.mensaje' doesn't exist in C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php:452
+Stack trace:
+#0 C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php(452): PDOStatement->execute()
+#1 C:\xampp\htdocs\Nueva pagina Stetia\php\controllers\superUser_controller.php(329): insert_object_in_BBDD(Object(PDO), 'Mensaje', Object(Mensaje))
+#2 C:\xampp\htdocs\Nueva pagina Stetia\home.php(18): send_message()
+#3 {main}Error al crear el objeto 
+PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'stetia.mensaje' doesn't exist in C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php:452
+Stack trace:
+#0 C:\xampp\htdocs\Nueva pagina Stetia\php\models\clases.php(452): PDOStatement->execute()
+#1 C:\xampp\htdocs\Nueva pagina Stetia\php\controllers\superUser_controller.php(329): insert_object_in_BBDD(Object(PDO), 'Mensaje', Object(Mensaje))
+#2 C:\xampp\htdocs\Nueva pagina Stetia\home.php(18): send_message()
+#3 {main}Error conexion.php checklog erroneo
 Error conexion.php checklog erroneo
 Error conexion.php checklog erroneo

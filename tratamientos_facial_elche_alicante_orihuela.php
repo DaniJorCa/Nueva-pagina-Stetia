@@ -19,7 +19,7 @@
 <?php
     include('php/pagination/artsXpag.php');
     include('php/models/clases.php');
-    include ('php/views/header.html');
+    include ('php/views/header.php');
     include ('php/views/slider.html');   
     ?>
     <div class='div-flex-nocolumn'>

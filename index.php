@@ -28,6 +28,7 @@ require_once  ('php/controllers/form_controller.php');
         }
     }
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -51,7 +52,7 @@ require_once  ('php/controllers/form_controller.php');
     </head>
 
 <?php
-    require_once  ('php/views/header.html');
+    require_once  ('php/views/header.php');
     require_once  ('php/views/slider.html');
      
 ?>

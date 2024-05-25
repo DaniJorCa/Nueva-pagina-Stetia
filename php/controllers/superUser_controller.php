@@ -249,47 +249,50 @@ function show_users(){
         }else{
             $array_usuarios = get_array_all_objects($con, 'usuarios', 'Usuario', $inicio, $artXpag);
         }
+
+
+        if(isset($_GET['master_view_user']) && $_GET['master_view_user'] !== ""){
+                $id = $_GET['master_view_user'];
+            }else{
+                $id = $_SESSION['user_log']->getId();
+            }
+            
+            $usuario_consultado = Usuario::get_object_user_by_value($con, 'id', $id);
+
+            if(isset($_GET['baja'])){
+                $usuario_consultado->setBaja(1);
+                update_field_in_BBDD($con, 'usuarios', 'baja', 1, 'id', $usuario_consultado->getId());
+            }
+            if(isset($_GET['alta'])){
+                $usuario_consultado->setBaja(0);
+                update_field_in_BBDD($con, 'usuarios', 'baja', 0, 'id', $usuario_consultado->getId());
+            }
+            if(isset($_GET['superuser'])){
+                $usuario_consultado->setPerfil(1);
+                update_field_in_BBDD($con, 'usuarios', 'perfil', 1, 'id', $usuario_consultado->getId());
+            }
+            if(isset($_GET['not-superuser'])){
+                $usuario_consultado->setPerfil(0);
+                update_field_in_BBDD($con, 'usuarios', 'perfil', 0, 'id', $usuario_consultado->getId());
+            }
+
+                if(isset($_GET['show_masters']) && isset($_GET['show_lows'])){
+                    $array_usuarios = get_object_from_table_by_dinamic_condition($con, 'Usuario', 'usuarios', 'perfil = 1 and baja = 1', $inicio, $artXpag);
+                }elseif(isset($_GET['show_masters'])){
+                    $array_usuarios = get_object_from_table_by_value($con, 'Usuario', 'usuarios', 'perfil', 1, $inicio, $artXpag);
+                }elseif(isset($_GET['show_lows'])){
+                    $array_usuarios = get_object_from_table_by_value($con, 'Usuario', 'usuarios', 'baja', 1, $inicio, $artXpag);  
+                }
+                
+                include('php/views/mto_usuarios.php');
+                if(!isset($_GET['viewer'])){
+                    include ('php/pagination/pagination_control.php');
+                }
     }else{
         echo "<h4 class='fs-3 text-center'>OOOOppss!! Quizas esta seccion no es para ti..... Te invitamos a ir a nuestra sección de los tratamientos mas realizados</h4>";
     }
 
-    if(isset($_GET['master_view_user']) && $_GET['master_view_user'] !== ""){
-        $id = $_GET['master_view_user'];
-      }else{
-        $id = $_SESSION['user_log']->getId();
-      }
-      
-      $usuario_consultado = Usuario::get_object_user_by_value($con, 'id', $id);
-
-      if(isset($_GET['baja'])){
-        $usuario_consultado->setBaja(1);
-        update_field_in_BBDD($con, 'usuarios', 'baja', 1, 'id', $usuario_consultado->getId());
-      }
-      if(isset($_GET['alta'])){
-        $usuario_consultado->setBaja(0);
-        update_field_in_BBDD($con, 'usuarios', 'baja', 0, 'id', $usuario_consultado->getId());
-      }
-      if(isset($_GET['superuser'])){
-        $usuario_consultado->setPerfil(1);
-        update_field_in_BBDD($con, 'usuarios', 'perfil', 1, 'id', $usuario_consultado->getId());
-      }
-      if(isset($_GET['not-superuser'])){
-        $usuario_consultado->setPerfil(0);
-        update_field_in_BBDD($con, 'usuarios', 'perfil', 0, 'id', $usuario_consultado->getId());
-      }
-
-        if(isset($_GET['show_masters']) && isset($_GET['show_lows'])){
-            $array_usuarios = get_object_from_table_by_dinamic_condition($con, 'Usuario', 'usuarios', 'perfil = 1 and baja = 1', $inicio, $artXpag);
-        }elseif(isset($_GET['show_masters'])){
-            $array_usuarios = get_object_from_table_by_value($con, 'Usuario', 'usuarios', 'perfil', 1, $inicio, $artXpag);
-        }elseif(isset($_GET['show_lows'])){
-            $array_usuarios = get_object_from_table_by_value($con, 'Usuario', 'usuarios', 'baja', 1, $inicio, $artXpag);  
-        }
-        
-        include('php/views/mto_usuarios.php');
-        if(!isset($_GET['viewer'])){
-            include ('php/pagination/pagination_control.php');
-        }
+    
 
     }
     function delete_user(){
@@ -319,4 +322,19 @@ function show_users(){
 
         require('php/views/status_chatbot.html');
     }
+
+function send_message(){
+    $con = Conexion::conectar_db();
+    $mensaje = new Mensaje($_POST['id_user'], $_POST['user_message']);
+    $is_inserted = insert_object_in_BBDD($con, 'mensajes', $mensaje);
+
+    if($is_inserted){
+        header('Location: home.php?type=_users_maiteinance&msg=_message_sent');
+        exit();
+    }else{
+        header('Location: home.php?type=_users_maiteinance&msg=_err_message_sent');
+        exit();
+    }
+
+}
 ?>

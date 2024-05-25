@@ -4,4 +4,12 @@
 }
 
 
+@media (min-width: 850px) {
+    #aside-dropdown-header{
+        display: none;
+    }
+}  
+
+
+
 

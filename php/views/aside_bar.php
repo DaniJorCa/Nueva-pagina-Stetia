@@ -1,4 +1,4 @@
-<div class="d-flex flex-column flex-shrink-0 p-3 bg-light col-1 col-lg-3 order-lg-start" id="aside-bar" style="width: 280px;">
+<div class="p-3 bg-light" id="aside-bar">
     <a href="home.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
         <use xlink:href="#bootstrap"></use>
         </svg> <span class="fs-4 text-center">Hola  <?php if($_SESSION['user_log']->getNombre() != ''){ echo $_SESSION['user_log']->getNombre(); }else{ echo("**Pendiente**");} ?></span> 
@@ -30,8 +30,24 @@
                 </svg>Recomendar Stetia</a> 
             </li>
             <li> 
-                <a href="#" id='recommend_stetia' class="nav-link link-dark">
-                <i class="fa-solid fa-envelope" style="color: #831959;"></i>
+                <a href="home.php?type=_my_messages" id='recommend_stetia' class="nav-link link-dark">
+<?php
+            $have_no_reads = false;
+            if(isset($mensajes_usuario) && (count($mensajes_usuario)) != 0){
+                foreach($mensajes_usuario as $mensaje){
+                    if($mensaje->getLeido() == 0){
+                        $have_no_reads = true;
+                    }
+                }
+                if($have_no_reads){
+                   echo '<i class="fa-solid fa-envelope fa-beat" style="color: #831959;"></i>'; 
+                }else{
+                   echo '<i class="fa-solid fa-envelope" style="color: #831959;"></i>'; 
+                } 
+            }else{
+                echo '<i class="fa-solid fa-envelope" style="color: #831959;"></i>';
+            }
+?>
                 <use xlink:href="#grid"></use>
                 </svg>Notificaciones</a> 
             </li>
@@ -67,12 +83,12 @@
     <div class="dropdown">
       <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
         <img src="<?php echo $_SESSION['user_log']->getImg() !== null ? $_SESSION['user_log']->getImg() : 'img/background/home_user.png'; ?>" alt="" width="32" height="32" class="rounded-circle me-2">
-        <strong>mdo</strong>
+        <strong>Mas opciones</strong>
       </a>
       <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
         <li><a class="dropdown-item" href="#">Profile</a></li>
         <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="exit.php">desconectar</a></li>
+        <li><a class="dropdown-item" href="exit.php">Salir</a></li>
       </ul>
     </div>
 

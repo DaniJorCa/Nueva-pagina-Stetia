@@ -222,3 +222,7 @@
     position: relative;
     bottom: 10px;
 }
+
+.chatbox{
+    z-index: 1;
+}

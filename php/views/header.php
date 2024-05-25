@@ -54,10 +54,83 @@
 
                 </ul>
               </li>
+
+              <li class="nav-item dropdown" id="aside-dropdown-header">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Menu usuario
+                </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li class="nav-item"> 
+                        <a href="home.php?type=_personal_corner" class="nav-link link-dark" aria-current="page">
+                            <i class="fa-solid fa-user-pen" style="color: #831959; width: 18px; height: 18px;"></i>
+                            <use xlink:href="#home"></use>
+                            </svg>Datos Personales</a> 
+                    </li>
+                    <li class="nav-item"> 
+                        <a href="home.php?type=_mis_tratamientos" class="nav-link link-dark">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color: #831959; width: 18px; height: 18px;"></i>
+                        <use xlink:href="#speedometer2"></use>
+                        </svg>Mis Tratamientos</a> 
+                    </li>
+                    <li> 
+                        <a href="home.php?type=_mis_puntos" class="nav-link link-dark">
+                        <i class="fa-solid fa-ranking-star" style="color: #831959; width: 18px; height: 18px;"></i>
+                        <use xlink:href="#table"></use>
+                        </svg>Programa de puntos</a> 
+                    </li>
+                    <li> 
+                        <a href="#" id='recommend_stetia' class="nav-link link-dark">
+                        <i class="fa-solid fa-comment" style="color: #831959; width: 18px; height: 18px;"></i>
+                        <use xlink:href="#grid"></use>
+                        </svg>Recomendar Stetia</a> 
+                    </li>
+                    <li> 
+                        <a href="#" id='recommend_stetia' class="nav-link link-dark">
+                        <i class="fa-solid fa-envelope" style="color: #831959;"></i>
+                        <use xlink:href="#grid"></use>
+                        </svg>Notificaciones</a> 
+                    </li>
+                    <li> 
+                        <a href="home.php?type=_goods_maiteinance" id='recommend_stetia' class="nav-link link-dark">
+                        <i class="fa-solid fa-person-digging" style="color: #831959; width: 18px; height: 18px;"></i>
+                        <use xlink:href="#grid"></use>
+                        </svg>Mtto. de articulos</a> 
+                    </li>
+        
+                    <li> 
+                        <a href="home.php?type=_users_maiteinance" id='recommend_stetia' class="nav-link link-dark">
+                        <i class="fa-solid fa-users" style="color: #831959; width: 18px; height: 18px;"></i>
+                        <use xlink:href="#grid"></use>
+                        </svg>Mtto. de usuarios</a> 
+                    </li>
+        
+                    <li> 
+                        <a href="home.php?type=_status_global" id='recommend_stetia' class="nav-link link-dark">
+                        <i class="fa-solid fa-scale-balanced"style="color: #831959; width: 18px; height: 18px;"></i>
+                        <use xlink:href="#grid"></use>
+                        </svg>Status global</a> 
+                    </li>
+        
+                    <li> 
+                        <a href="home.php?type=_status_chatbot" id='status_chatbot_main' class="nav-link link-dark">
+                        <i class="fa-solid fa-robot"style="color: #831959; width: 18px; height: 18px;"></i>
+                        <use xlink:href="#grid"></use>
+                        </svg>Status Chatbot</a>
+                    </li>
+                </ul>
+              </li>
+
+
             </ul>
+<?php
+if(!isset($_SESSION['check_log'])){
+?>
             <form class="d-flex">
               <a href="login.php"><button type="button" style="color: #792359; border: 2px solid #792359;" class="btn btn-outline">Log In</button></a> 
             </form>
+<?php
+}
+?>  
           </div>
         </div>
       </nav>

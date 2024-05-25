@@ -136,9 +136,9 @@ if (file_exists($file_name)) {
       //TODO: capturar error
 }
 
-if($token_found){
+if(isset($token_found)){
 ?>
-    <form class="row g-3 .needs_validate" id='form-new-passwd' method="POST" action="utils/set_new_passwd.php" novalidate>
+    <form class="row g-3 .needs_validate" id='form-new-passwd' method="POST" action="set_new_passwd.php" novalidate>
         <img class="mb-4" src="img/logo_stetia.png" alt="Logo Stetia" width="25%" height="25%">
         <img class="mb-4 ms-3" src="img/letras_stetia.png" alt="Letras Stetia" width="60%" height="60%">
         <h1 class="h3 mb-3 fw-normal">Establece tu nueva contraseña</h1>
@@ -197,7 +197,7 @@ if($token_found){
 
 <body cz-shortcut-listen="true">
 
-<form method="POST" action="utils/send_email_new_passwd.php">
+<form method="POST" action="send_email_new_passwd.php">
     <img class="mb-4" src="img/logo_stetia.png" alt="" width="25%" height="25%">
     <img class="mb-4 ms-3" src="img/letras_stetia.png" alt="" width="60%" height="60%">
     <h1 class="h3 mb-3 fw-normal">Recuperar contraseña</h1>
