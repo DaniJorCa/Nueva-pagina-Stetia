@@ -237,10 +237,10 @@
 
         <div class="d-flex justify-content-center col-12 col-lg-3">
             <div class="row justify_content-center col-12">
-                <button type='button' class='fs-3 btn btn-outline-dark col-12 align-middle mx-1 mx-3 my-2'>
+                <button type='button' class='fs-3 btn btn-outline-dark col-12 align-middle mx-1 mx-3 my-2' id='btn_set_points'>
                     <i class='fa-solid fa-gifts mx-2 fs-2' style='color: #831959;'></i>Asignar puntos
                 </button>
-                <button type='button' class='fs-3 btn btn-outline-dark col-12 align-middle mx-1 mx-3 my-2'>
+                <button type='button' class='fs-3 btn btn-outline-dark col-12 align-middle mx-1 mx-3 my-2' id='btn_set_treatment'>
                     <i class='fa-solid fa-hand-holding-medical mx-2 fs-2' style='color: #831959;'></i>Asignar Tto. Realizado
                 </button>
                 <button type='button' class='fs-3 btn btn-outline-dark col-12 align-middle mx-1 mx-3 my-2' id='btn_send_user_message'>

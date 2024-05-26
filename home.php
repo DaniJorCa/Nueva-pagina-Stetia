@@ -20,6 +20,12 @@ if(isset($_GET['type'])){
         case '_del_correo':
             delete_mail();
             break;
+        case '_set_treatment':
+            set_treatment();
+            break;
+        case '_set_points':
+            set_points();
+            break;
     }
 }
 
@@ -71,7 +77,19 @@ include  ('php/views/aside_bar.php');
 //Control de mensajes
     if(isset($_GET['msg']) ? $message = $_GET['msg']: '');
     if(isset($message)){
-       switch ($message) {
+       switch ($message){
+            case '_updated_points';
+                print("<h3 class='text-success fs-2 my-3 col-12 text-center'>Actualizacion de puntos realizada con éxito</h3>");
+                break;
+            case '_err_updated_points';
+                print("<h3 class='text-danger fs-2 my-3 col-12 text-center'>Error inesperado al actualizar los puntos del usuario</h3>");
+                break;
+            case '_err_treatment_assigned';
+                print("<h3 class='text-danger fs-2 my-3 col-12 text-center'>Error inesperado al asignar el tratamiento</h3>");
+                break;
+            case '_treatment_assigned';
+                print("<h3 class='text-success fs-2 my-3 col-12 text-center'>Tratamiento asignado correctamente</h3>");
+                break;
             case '_err_mail_deleted';
                 print("<h3 class='text-danger fs-2 my-3 col-12 text-center'>Ha ocurrido un error al eliminar el mensaje</h3>");
                 break;
@@ -107,6 +125,13 @@ include  ('php/views/aside_bar.php');
     if(isset($_GET['type'])){
         $type = $_GET['type'];
         switch ($type) {
+            
+            case '_modify_points':
+                modify_points();
+                break;
+            case '_selection_treatment':
+                selection_treatment();
+                break;
             case '_my_messages':
                 show_my_messages($mensajes_usuario);
                 break;
@@ -153,7 +178,7 @@ include  ('php/views/aside_bar.php');
                 mostrar_menu_mantenimiento();
                 break;
             case '_mis_tratamientos':
-                include('php/views/mis_tratamientos.php');
+                show_treatments();
                 break;
             case '_edit_user_info':
                 modificar_datos_usuario_regitrado();

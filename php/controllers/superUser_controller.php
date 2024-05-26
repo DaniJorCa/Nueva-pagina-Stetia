@@ -314,6 +314,38 @@ function show_users(){
     }
 
     function status_global(){
+        require_once('php/models/clases.php');
+        $con = Conexion::conectar_db();
+        $usuarios = get_object_from_table_by_dinamic_condition($con, 'Usuario', 'usuarios', 'fecha_alta >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)', 0, 999);
+        
+        $jsonFilePath = 'utils/json/tratamientos_realizados.json';
+        $suma_valor_tratamientos = 0;
+        if (file_exists($jsonFilePath)) {
+            // Leer el contenido del archivo JSON
+            $jsonContent = file_get_contents($jsonFilePath);
+            $all_treatments = Tratamiento::get_all_treatments();
+
+            // Verificar si el contenido está vacío
+            if (empty($jsonContent)) {
+                $tratamientos = []; // Si el archivo está vacío, tratarlo como un array vacío
+            } else {
+                // Decodificar el contenido JSON en un array asociativo
+                $tratamientos_realizados = json_decode($jsonContent, true);
+                $tratamientos= Tratamiento::get_all_treatments();
+                // Verificar si la decodificación fue exitosa
+                if (json_last_error() == JSON_ERROR_NONE) {
+                    foreach($tratamientos_realizados as $tratamiento_realizado){
+                        foreach($tratamientos as $tratamiento){
+                            if($tratamiento_realizado['idTratamiento'] == $tratamiento['id']){
+                                $suma_valor_tratamientos += $tratamiento['precio'];
+                            }
+                        }
+                        
+                        
+                    }
+                }
+            }
+    }
         require('php/views/status_global.php');
     }
 
@@ -333,6 +365,106 @@ function send_message(){
         exit();
     }else{
         header('Location: home.php?type=_users_maiteinance&msg=_err_message_sent');
+        exit();
+    }
+}
+
+function selection_treatment(){
+    require_once('php/models/clases.php');
+    $con = Conexion::conectar_db();
+    $_SESSION['id_asignar_tratamiento'] = $_GET['id'];
+    $usuario = Usuario::get_object_user_by_value($con, 'id', $_GET['id']);
+    $tratamientos = Tratamiento::get_all_treatments();
+    include('php/views/asignar_tratamiento.php');
+}
+
+function set_treatment(){
+    require_once('php/models/clases.php');
+    $con = Conexion::conectar_db();
+
+    // Ruta al archivo JSON
+    $jsonFilePath = 'utils/json/tratamientos_realizados.json';
+
+    // Verificar si el archivo JSON existe
+    if (file_exists($jsonFilePath)) {
+        echo('Existe el Json');
+        // Leer el contenido del archivo JSON
+        $jsonContent = file_get_contents($jsonFilePath);
+        
+        // Verificar si el contenido está vacío
+        if (empty($jsonContent)) {
+            $dataArray = []; // Si el archivo está vacío, tratarlo como un array vacío
+        } else {
+            // Decodificar el contenido JSON en un array asociativo
+            $dataArray = json_decode($jsonContent, true);
+            
+            // Verificar si la decodificación fue exitosa
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                header('Location: home.php?type=_selection_treatment&id='. $_SESSION['id_asignar_tratamiento'].'&msg=_err_treatment_assigned&error=decoding_json');
+                exit();
+            }
+        }
+
+        // Agregar o actualizar el contenido con los nuevos datos
+        $newData = array(
+            'user' => $_GET['id'],
+            'idTratamiento' => $_POST['treatment']
+        );
+
+        // Añadir el nuevo dato al array
+        $dataArray[] = $newData;
+
+        // Codificar el array de nuevo a JSON
+        $newJsonContent = json_encode($dataArray, JSON_PRETTY_PRINT);
+
+        // Verificar si la codificación fue exitosa
+        if ($newJsonContent !== false) {
+            // Escribir el contenido actualizado en el archivo JSON
+            if (file_put_contents($jsonFilePath, $newJsonContent)) {
+                header('Location: home.php?type=_selection_treatment&id='. $_SESSION['id_asignar_tratamiento'].'&msg=_treatment_assigned');
+                exit();
+            } else {
+                header('Location: home.php?type=_selection_treatment&id='. $_SESSION['id_asignar_tratamiento'].'&msg=_err_treatment_assigned&error=writing_json');
+                exit();
+            }
+        } else {
+            header('Location: home.php?type=_selection_treatment&id='. $_SESSION['id_asignar_tratamiento'].'&msg=_err_treatment_assigned&error=encoding_json');
+            exit();
+        }
+    } else {
+        header('Location: home.php?type=_selection_treatment&id='. $_SESSION['id_asignar_tratamiento'].'&msg=_err_treatment_assigned&error=json_not_found');
+        exit();
+    }
+}
+
+
+function modify_points(){
+    require_once('php/models/clases.php');
+    $con = Conexion::conectar_db();
+    $_SESSION['id_asignar_puntos'] = $_GET['id'];
+    $usuario = Usuario::get_object_user_by_value($con, 'id', $_GET['id']);
+
+    include('php/views/asignar_puntos.php');
+}
+
+function set_points(){
+    require_once('php/models/clases.php');
+    $con = Conexion::conectar_db();
+
+    $puntos = $_POST['puntos'];
+    $id = $_GET['id'];
+
+    $usuario = Usuario::get_object_user_by_value($con, 'id', $id);
+
+    $puntos_totales = $usuario->getPuntos() + $puntos;
+
+    $is_update_points = update_field_in_BBDD($con, 'usuarios', 'puntos', $puntos_totales, 'id', $id);
+
+    if($is_update_points){
+        header('Location: home.php?type=_modify_points&id='. $id. '&msg=_updated_points');
+        exit();
+    }else{
+        header('Location: home.php?type=_modify_points&id='. $id. '&msg=_err_updated_points');
         exit();
     }
 

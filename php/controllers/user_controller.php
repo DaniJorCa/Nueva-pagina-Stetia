@@ -12,6 +12,8 @@ $mensajes_usuario = [];
 
 function my_score(){
     require_once('php/models/clases.php');
+    $con = Conexion::conectar_db();
+    $usuario = Usuario::get_object_user_by_value($con, 'id', $_SESSION['user_log']->getId());
 
     include('php/views/mi_puntuacion.php');
 }
@@ -52,12 +54,41 @@ function delete_mail(){
     
 }
 
-    
-
 function show_message($id){
     $con = Conexion::conectar_db();
     $show_message = Mensaje::get_object_good_by_value($con, 'id', $id);
     return $show_message;
+}
+
+function show_treatments(){
+    require_once('php/models/clases.php');
+    $jsonFilePath = 'utils/json/tratamientos_realizados.json';
+
+    if (file_exists($jsonFilePath)) {
+        // Leer el contenido del archivo JSON
+        $jsonContent = file_get_contents($jsonFilePath);
+        $all_treatments = Tratamiento::get_all_treatments();
+
+        // Verificar si el contenido está vacío
+        if (empty($jsonContent)) {
+            $tratamientos = []; // Si el archivo está vacío, tratarlo como un array vacío
+        } else {
+            // Decodificar el contenido JSON en un array asociativo
+            $tratamientos = json_decode($jsonContent, true);
+            $tratamiento_usuario = [];
+            // Verificar si la decodificación fue exitosa
+            if (json_last_error() == JSON_ERROR_NONE) {
+                foreach($tratamientos as $tratamiento){
+                    if($tratamiento['user'] == $_SESSION['user_log']->getId()){
+                        array_push($tratamiento_usuario, $tratamiento);
+                    }
+                }
+            }
+        }
+
+    }
+    
+    include('php/views/mis_tratamientos.php');
 }
 
 

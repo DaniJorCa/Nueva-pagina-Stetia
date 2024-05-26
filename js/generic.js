@@ -90,8 +90,11 @@ if (!parametrosURL.has('user_view')) {
 let estado_div_read_message = localStorage.getItem('estado_div_read_message') || 'none';
 let estado_div_show_messages = localStorage.getItem('estado_div_show_messages') || 'block';
 
-document.getElementById('div-read-message').style.display = estado_div_read_message;
-document.getElementById('div-show-messages').style.display = estado_div_show_messages;
+if(estado_div_read_message !== null && estado_div_show_messages !== null && document.getElementById('div-read-message') && document.getElementById('div-show-messages')){
+    document.getElementById('div-read-message').style.display = estado_div_read_message;
+    document.getElementById('div-show-messages').style.display = estado_div_show_messages; 
+}
+
 
 
 const botonesLeer = document.querySelectorAll('.btn-read-correo');
@@ -116,12 +119,58 @@ function leerCorreo(idCorreo) {
     mostrarSpinnerYRedirigir(url_a_redirigir, 'div-show-messages');
 }
 
-document.getElementById('btn_show_all_messages').addEventListener('click', function(){
+if(document.getElementById('btn_show_all_messages')){
+   document.getElementById('btn_show_all_messages').addEventListener('click', function(){
     url_a_redirigir = 'home.php?type=_my_messages';
     document.getElementById('div-show-messages').style.display = 'block';
     localStorage.setItem('estado_div_show_messages', 'block');
     localStorage.setItem('estado_div_read_message', 'none');
     mostrarSpinnerYRedirigir(url_a_redirigir, 'div-read-message');
-});
+}); 
+}
+
+
+if(document.getElementById('btn_set_treatment')){
+  document.getElementById('btn_set_treatment').addEventListener('click', function(){
+        // Obtener la URL actual
+    let urlCompleta = window.location.href;
+
+    // Extraer el número de la URL
+    let numero = urlCompleta.match(/master_view_user=(\d+)/);
+
+    // Verificar si se encontró el número en la URL
+    if (numero && numero.length > 1) {
+        // Obtener el número desde la coincidencia en la expresión regular
+        let numeroExtraido = numero[1];
+        console.log(numeroExtraido); // Imprimir el número extraído
+        localStorage.setItem('id_asignar_tratamiento', numeroExtraido);
+        window.location.href = 'home.php?type=_selection_treatment&id=' + numeroExtraido;
+    } else {
+        console.log("No se encontró ningún número en la URL.");
+    }    
+});  
+}
+
+
+if(document.getElementById('btn_set_points')){
+    document.getElementById('btn_set_points').addEventListener('click', function(){
+          // Obtener la URL actual
+      let urlCompleta = window.location.href;
+  
+      // Extraer el número de la URL
+      let numero = urlCompleta.match(/master_view_user=(\d+)/);
+  
+      // Verificar si se encontró el número en la URL
+      if (numero && numero.length > 1) {
+          // Obtener el número desde la coincidencia en la expresión regular
+          let numeroExtraido = numero[1];
+          console.log(numeroExtraido); // Imprimir el número extraído
+          localStorage.setItem('id_asignar_puntos', numeroExtraido);
+          window.location.href = 'home.php?type=_modify_points&id=' + numeroExtraido;
+      } else {
+          console.log("No se encontró ningún número en la URL.");
+      }    
+  });  
+  }
 
 });
